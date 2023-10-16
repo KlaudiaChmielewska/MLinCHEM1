@@ -1,0 +1,556 @@
+---
+title: "__ML in chem__"
+subtitle: "*Lesson 1*"
+author: "__*Klaudia Chmielewska*__"
+output:    
+  html_document:
+    theme: darkly
+    df_print: paged
+    highlight: tango #code highlighter
+    toc: true # generates a table of contents (based on # and ## lines)
+    number_sections: false # table of contents numbers
+    toc_float: yes # floating table of contents
+    css: style.css 
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+\
+
+# *<span style="text-decoration:underline">What is ML?</span>*
+\
+
+## Why are cats afraid of cucumbers?
+\
+
+Of course it has to do with the fact that the cucumber looks a little bit like a snake, which to the cat is a clear information - "DANGER!"!!
+
+\
+
+All because the brain likes to recognize the unknown based on the set of patterns it already understands. That's also why you might sometimes feel like a bug is on your skin - though it's just your hair! Or when we recognize shadows of our hands on the wall as animals!
+\
+
+
+<div class = "row">
+  
+<div class = "col-md-6">
+
+
+
+![**_Shocked cat, right before the hiss and run!_**](shocked_cat.jpg)
+
+
+</div>
+<div class = "row">
+  
+<div class = "col-md-6">
+![**_Is it a dog or just hands...?_**](shadow.jpg)
+</div>
+\
+\
+
+
+
+This means we visualize a pattern allowing us to predict the outcome in given situations. We attribute different values to known outcomes in order to better adapt to our reality. Hence your dreams might sometimes be about the situations you're afraid about - in order to give you the opportunity to see how would you handle it when the time comes!
+\
+\
+
+Predicting what may happen next allows us to be more prepared. If we know a hurricane is coming, we can evacuate the cities earlier, if we predict the weather for the next day we might avoid getting caught in the rain without an umbrella, etc.
+\
+
+From your daily life, you surely had noticed that some of you mails are automatically marked as spam - this also happens due to a pattern visible in many of such mails, which enabled to flag them as Spam indeed.
+\
+\
+
+We can create algorithms able to see patterns just as a human eye!
+\
+
+This way we don't need anyone who would go through your mails to tell whether they are Spam or not - but rather an algorithm, which checks text for specific elements, which might suggest it's Spam.
+\
+\
+
+Of course, if given enough data, such algorithm can also predict chemical or biological outcomes, for example we could build an algorithm to predict the solubility, stability or ADMET of a particular molecule; find binding site of enzymes with medical relevance, predict best synthetic routes for drugs or define probable toxicity.
+\
+\
+
+
+***
+\
+
+## Applications - types of studies
+\
+
+* Property / Activity Prediction through QSAR/QSPR [1](https://doi.org/10.2174/1570163817666200316104404), [2](https://doi.org/10.1021/acsomega.2c03062), [3](https://doi.org/10.1021/acs.jcim.2c01422), [4](https://doi.org/10.1080/07391102.2022.2109753)
+* Quantum Mechanics and Density Functional Theory [1](https://doi.org/10.1021/acs.jcim.9b00439), [2](https://doi.org/10.1038/s41467-020-19093-1), [3](https://doi.org/10.1038/s41524-020-0310-0)
+* Force Field Parameter Determination [1](10.1103/PhysRevB.100.014105), [2](https://doi.org/10.1021/acscentsci.8b00913), [3](https://doi.org/10.1016/j.sbi.2019.12.005), [4](https://doi.org/10.1063/1.5126336)
+* Partial Atomic Charge Determination [1](https://doi.org/10.1021/acs.jctc.0c01229), [2](https://doi.org/10.1021/acs.jcim.0c00273), [3](https://doi.org/10.3389/fgene.2019.00990), [4](https://doi.org/10.1093/bib/bbaa183)
+* Molecular Dynamics [1](https://doi.org/10.1016/j.sbi.2019.12.016), [2](https://doi.org/10.1063/5.0059915), [3](https://doi.org/10.1016/j.csbj.2020.02.007), [4](https://doi.org/10.1007/s10973-019-08762-z), [5](https://doi.org/10.1021/acs.jctc.0c00355), [6](https://doi.org/10.1016/j.compscitech.2020.108627)
+* Virtual Screening [1](https://doi.org/10.1093/bib/bby061), [2](https://doi.org/10.1016/j.cbpa.2021.04.009), [3](https://doi.org/10.1073/pnas.2000585117), [4](https://doi.org/10.1002/wcms.1478)
+* Docking (more precise calculations of the binding) [1](https://doi.org/10.1093/bib/bbab072), [2](https://doi.org/10.1093/bioinformatics/btab715)
+* Binding site prediction [1](https://doi.org/10.1186/s13321-018-0285-8), [2](https://doi.org/10.1093/bioinformatics/btaa1005)
+* Predicting pKa [1](https://doi.org/10.1016/j.drudis.2022.103372), [2](https://doi.org/10.1186/s13321-019-0384-1)
+* Spectral data modeling [1](https://doi.org/10.3390/metabo10060243), [2](https://doi.org/10.1002/mas.21602)
+* Molecule generation [1](https://doi.org/10.3390/polym12010163), [2](https://doi.org/10.1021/acs.accounts.0c00699), [3](https://doi.org/10.1021/acs.chemrev.3c00189)
+
+\
+\
+
+
+## Applications - topics
+\
+
+* Discovering and understanding new materials [1](https://doi.org/10.1021/acsmaterialslett.1c00204), [2](https://doi.org/10.1021/jacs.0c09105), [3](https://doi.org/10.1038/s41586-018-0337-2), [4](https://doi.org/10.1039/D2CS00203E)
+* Environmental Chemistry [1](https://doi.org/10.1021/acs.est.1c05970), [2](https://doi.org/10.1016/j.cej.2021.131810)
+* Medicinal Chemistry (drug design, toxicity prediction etc.) [1](https://www.mdpi.com/1422-0067/19/8/2358), [2](https://doi.org/10.1021/acs.chas.0c00075), [3](https://doi.org/10.1007/s11030-021-10217-3), [4](https://doi.org/10.1016/j.drudis.2017.08.010), [5](https://doi.org/10.1016/j.drudis.2016.01.007)
+* Computational prediction of protein-drug binding [1](https://doi.org/10.1093/bioinformatics/btaa858), [2](https://doi.org/10.1038/s41467-020-18071-x)
+* Prediction of metabolism [1](https://doi.org/10.1016/j.coisb.2021.03.001), [2](https://doi.org/10.1038/s41467-021-22989-1)
+* Photodynamics simulation [1](https://doi.org/10.1021/acs.accounts.2c00288)
+* Determining best synthesis route [1](https://doi.org/10.1016/j.trechm.2022.07.005), [2](https://doi.org/10.1021/acs.chemrev.1c00033)
+
+***
+\
+\
+
+
+## Exercise 1
+\
+
+
+Choose 2 applications of ML in chemistry (1 type + 1 topic). 
+
+In a Word document, for BOTH applications:
+
+* Describe how machine learning is used in this branch of science (either type or topic)
+* Name popular ML algorithms for this type of application (and if possible provide an explanation why is that)
+* Try to find a publication with a newly proposed algorithm for chosen type of application and define why is it potentially useful
+* Find out 3 publications regarding chosen topic, write out the methods used and define why those particular ones were chosen (your own opinion, supplemented with knowledge on a given method or statement of the authors)
+* Try to define (in points) what would be the steps you'd have to take to perform your own study of chosen type/topic
+\
+
+Pro-tip I: You can work in pairs.
+
+Pro-tip II: You can choose a type and topic which are related to each other, like QSAR + Environmental Chemistry, Virtual Screening + Medicinal Chemistry, Binding site prediction + Computational prediction of protein-drug binding etc. 
+\
+\
+\
+
+
+***
+\
+\
+
+## How can bots learn?
+\
+
+A short answer to this question would be that... we don't really know! 
+\
+
+However, there are possible easy representations that more or less show the possible processes that eventually make bots learn!
+\
+
+
+[Here](https://www.youtube.com/watch?v=R9OHn5ZF4Uo) you can understand how the genetic breeding model works!
+
+[Here](https://www.youtube.com/watch?v=wvWpdrfoEv0) is a little bit about Deep Learning and Recursive Neural Networks
+
+
+
+\
+\
+
+
+***
+\
+\
+
+
+## Steps for ANY machine learning study
+\
+\
+
+Click on the bars below to see comments on each of the step.
+\
+\
+
+
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.collapsible {
+  background-color: #073973;
+  color: #ffffff;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+.active, .collapsible:hover {
+  background-color: #073973;
+}
+
+.content {
+  padding: 0 18px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+  background-color: #2074d4;
+}
+</style>
+</head>
+<body>
+
+
+<button class="collapsible">Data Collection</button>
+<div class="content">
+  <p>  
+  _Here we gather the information we want the ML algorithm to analyze._
+  \
+  
+  _This means the data set which we know has true outcomes, hence it can be a known interaction/toxicity etc. (for ex. IC50, LD50, synthesis efficacy %), and aside from chemistry it might be temperature in Poland in summer months, used to estimate how hot will the next summer be, or it can be a set of pictures, maps etc._
+  \
+  
+  _**Before taking any data for analysis, make sure it comes from a trusted source!**_
+
+  </p>
+</div>
+<button class="collapsible">Data exploration and preparation</button>
+<div class="content">
+  <p>
+  _**!MOST CRUCIAL STEP!**_
+  \
+  
+  _Given that the quality of our results depend on the quality of data we use, we need to go through our data set to make sure it presents only the relevant and precise data._
+  \
+  
+  _This means before we go further with our analysis, we need to clean, tidy up our data set, get rid of potentially noisy/messy points. Aside from that, we need to make sure whether we have NAs and if the data set is written in a logical way (whether the columns work fine, is the title of the column understandable for the computer, are there any columns we don't need for the analysis, does the data set present one type of data for each column - which means "Is the column self-explanatory and contains only one type of data? Because if my IC50 column also contains LD50 values then I have to divide those two into two different columns")._
+  \
+  
+  _This step allows you to better understand your data set, see its possible perks and possibilities to answer specific problems. You can also run several graphs to see how the data set looks like, visualize potential differences etc.. Thanks to that, you'll know which ML model might be best too. You'll also gain an understanding of what can you find from the data set you chose._
+  \
+  
+  _This is also the right time to perform preprocessing step - the dimensionality reduction (which we'll later discuss in more details), which means grouping data and deleting potential outliers, in order to improve the performance of our chosen ML model. Here, you can use unsupervised ML methods to group your data._
+  \
+  
+  _Last but not least, here is when we split the data into two parts - one with the aim to train our (soon chosen) model (majority of the whole set) and the second, to evaluate whether the model we trained really is able to predict the values with good probability. It's best to use train/eval split around 80/20 or 70/30 (meaning 70% of data points are attributed to the testing set and remaining 30% would be used to evaluate the model)._
+
+  </p>
+</div>
+
+<button class="collapsible">Choosing an algorithm and relevant descriptors</button>
+<div class="content">
+  <p>
+  _Now, knowing your data set a little, you're able to decide which ALGORITHM might be best for your hypothesis/scientific problem, and run it through your data to create the models (Remember this! Algorithm is a set of tasks performed on your data in order to recognize its patterns and rules in order to create ML models; while model is the output of ML algorithm run on data, acting like programs)._
+  \
+  
+  _Image data algorithms will be different than text-based data. Same goes for algorithms in different types of chemistry fields - a good algorithm for virtual screening will not work well for pKa prediction and vice versa._
+  \
+  
+  _Take your time while choosing the right algorithm! Find the one that best fits your data. Otherwise, your results won't bring you anything relevant._
+  \
+  
+  _You'll also need to define the features/independent variables/descriptors you use in order to train your model (this helps you reduce the complexity of data and reduce the chance for overfitting)._
+
+  </p>
+</div>
+<button class="collapsible">Model building and training</button>
+<div class="content">
+  <p>
+  _Now it's simply time to feed our algorithm with data and see how the created models are able to predict the values. How accurate are the models? How far from the true, experimental value, is their prediction?_
+  
+  </p>
+</div>
+
+<button class="collapsible">Model evaluation</button>
+<div class="content">
+  <p>
+  _Now we can test our models on the previously unseen data, which we still have the experimental values for. This is a little bit like checking whether the model is working well with the new data. We can observe whether its quality is still good, as seen previously during testing phase._
+  \
+  
+  _In a nutshell, here you evaluate how well does the model "learn from experience"._
+</p>
+</div>
+
+<button class="collapsible">Model improvement</button>
+<div class="content">
+  <p>
+  _Here we define how can we eventually enhance our models accuracy, or dismiss the model altogether if we see the other might have more potential. Eventually, we can now decide to feed the algorithm with more data and compare the efficiency of the new models created._
+  
+</p>
+</div>
+
+<button class="collapsible">Prediction</button>
+<div class="content">
+  <p>
+  _Now, being sure of our models accuracy, we let it run on the data set we want to predict the specific values for, prepare the graphs, analysis and discussion. It's a good practice to use different ML algorithms for comparison of the results, hence statistically showing the significance of said results._
+</p>
+</div>
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.maxHeight){
+      content.style.maxHeight = null;
+    } else {
+      content.style.maxHeight = content.scrollHeight + "px";
+    } 
+  });
+}
+</script>
+
+</body>
+</html>
+
+
+\
+\
+
+***
+
+\
+
+
+## Types of ML
+
+\
+
+Basically, we can divide machine learning algorithms by how they are taught:
+\
+
+* supervised learning
+* unsupervised learning
+* semi-supervised learning
+* reinforcement learning
+\
+
+
+Supervision here does not mean a human needs to tell the algorithm how to understand the data, but rather means feeding the algorithm with what it has to learn (data labeled as input and output during training) and how. Unsupervised methods works on an unlabelled/raw data and learns its possible connections itself.
+\
+
+**Supervised learning** can help us classify data into specific categories ("Is this message Spam or not?", "Is this picture a bee or a three?"), with examples being linear classifiers, support vector machines, decision trees and random forest algorithm; or help us understand the relationship between the dependent and independent variables (regression algorithms, like logistic or polynomial regression).
+\
+
+On the other hand, **unsupervised learning** algorithms work on an unlabeled data, trying to figure out the set on its own, by grouping the data and clustering it. Unsupervised learning usually complements the supervised learning in order to obtain the most precise results.
+\
+
+Three main tasks of unsupervised learning are:
+\
+
+* clustering (assigning data points into groups, based on their similarities)
+* association (seeking relationships between different variables/features)
+* dimensionality reduction (used if the number of features/data points is too big, as it reduces the number of data points in the set without loosing the integrity of the data, can be used as a preprocessing step, as mentioned earlier, in order to remove noise)
+
+\
+
+Interestingly, there is a "why not both?" option as well - **semi-supervised** learning! It is a technique where small portion of data is labeled, and other are not. The major drawback of supervised learning algorithms is that the require labeling the data, which might be complicated, especially with a huge data set. Generally it's an approach useful when we cannot find fully labeled data sets and find it very hard and time consuming to label it by hand (when we have easily obtainable data, but hard to label).
+
+You can read more on that type of learning [here](https://www.altexsoft.com/blog/semi-supervised-learning/).
+
+Labeled points will be treated as a script telling us what classes does our data set provide and which clusters of data correspond to which class. Further, the unlabeled data will be classified based on the labeled set analogy. This combined approach is useful when our data set is not all labeled and is a huge set of points or when we just want to increase the accuracy of the models otherwise used. Image and speech recognition are one of the most known examples of semi-supervised learning.
+\
+\
+\
+
+Finally, **reinforcement learning** is a method of "learning from mistakes", where there are rewards and punishments for the algorithm. Training goal for such algorithm would be to find a suitable action model which would maximize the number of rewards given. More or less it is a bit like training a dog - after a while, the dog will get more excited to perform tasks which he knows he gains most treats from and will even start the sequence himself, knowing it might result in getting more treats. In another way, many video games have a lvl system, where when you gain a new level you also receive new abilities, rewards and basically can do more cool stuff!
+
+\
+
+Overall:
+
+- supervised algorithms can explain how long is your bus commute to the University based on the time you left home (whether it was 7AM or 10AM, there are going to be less or more buses around and more or less traffic)
+
+- unsupervised algorithms can tell you what time in a day does the traffic occur more often
+
+- semi-supervised learning will check how long would your bus commute take, dependent on the time you left home, traffic and the bus line you decide to take (which you can label as more/less busy in given hours)
+
+- reinforcement learning will let you know which road might be more busy (more potential traffic) on the time you leave home, so that you can avoid longer bus commute (and take a different bus)
+
+
+\
+\
+\
+
+
+__*During our course, we'll discuss in detail those types of ML learning, its popular algorithms and their outcomes; and try to apply learned methods in order to analyze different data sets. Given that you learned some of the unsupervised methods during other classes, our focus will fall out of this scope, with more care put onto other types of learning.*__
+\
+\
+\
+
+
+***
+\
+\
+
+
+
+# *<span style="text-decoration:underline">Semi-supervised learning</span>*
+
+\
+
+As mentioned, semi-supervised learning is a way between supervised and unsupervised learning. 
+
+You're already familiar with PCA. Interestingly, its combination with a supervised dimensionality reduction approach FDA (Fisher Discriminant Analysis) is a semi-supervised method, called SFDA.
+
+We can combine different types of algorithms, in order to broaden their applicability to more topics (more complex ones too!).
+\
+
+
+We have 5 most important semi-supervised data modeling method types:
+\
+\
+
+- self-training [1](https://doi.org/10.1093/bib/bbab109), [2](https://doi.org/10.1016/j.ces.2022.117459), [3](https://doi.org/10.1016/j.eswa.2020.113569), [4](https://doi.org/10.1186/s12859-019-3274-7)
+- co-training [1](https://doi.org/10.3390/s23094392), [2](https://doi.org/10.1016/j.compchemeng.2021.107418), [3](https://doi.org/10.3390/atmos14010143), [4](https://doi.org/10.1016/j.media.2020.101766), [5](https://doi.org/10.1016/j.patcog.2020.107269)
+- probabilistic generative models [1](https://doi.org/10.1016/j.ymssp.2020.106653), [2](https://doi.org/10.1016/j.compbiolchem.2015.02.002), [3]( https://doi.org/10.3389/fgene.2019.01243)
+- graph-based methods [1](https://doi.org/10.1016/j.compbiomed.2023.107199), [2](https://doi.org/10.1145/3522664.3528606), [3](10.1109/ACCESS.2020.3033589), [4](https://doi.org/10.1007/s10796-016-9724-0)
+- active learning approaches [1](https://doi.org/10.1038/s41598-018-31395-5), [2](https://doi.org/10.1371/journal.pone.0162075), [3](https://doi.org/10.1016/j.cmpbup.2023.100096). [4](https://doi.org/10.1016/j.geoderma.2020.114830)
+\
+\
+
+Table below presents those methods in a short manner ( [source](https://doi.org/10.1016/j.ifacsc.2021.100150) ) :
+
+```{r, echo=FALSE, eval=TRUE, warning=FALSE}
+library(flextable)
+library(tidyverse)
+library(dplyr)
+
+one <- read.csv("semisupmeth.csv")
+
+table1 <- flextable(one)
+
+preview <- table1 %>%
+  autofit() %>%
+  theme_booktabs() %>%
+  bg(part =  "all", bg = "white")
+
+preview
+```
+
+\
+\
+\
+
+
+## Exercise 2
+\
+
+In a group of 2 or 3 people *pick 1 of the semi-supervised methods* above and:
+
+
+- create an explanation of it, how it works (if possible, include the graphic showing steps of algorithm implementation)
+- define what kind of problems can it solve (give examples of hypotheses to solve with this learning method)
+- find 2 research papers (different than ones above!) that use your particular learning method, describe their premise and conclusions in up to 6 sentences
+
+\
+\
+
+
+## MixMatch
+
+[1](https://www.youtube.com/watch?v=0O1UXKh-Yck)
+
+[2](https://www.youtube.com/watch?v=bGEDjhbSHmg)
+
+[3](https://github.com/google-research/mixmatch)
+
+## InstructMol
+
+[1](https://github.com/smiles724/InstructMol)
+
+\
+\
+
+
+
+
+***
+\
+\
+
+# *<span style="text-decoration:underline">Supervised learning</span>*
+\
+\
+
+Creating models based on supervised learning rely on regression, classification and mixed approaches.
+\
+\
+
+* Regression is something you probably did many times - it checks how data changes inside one variable (like time) and whether there are aspects allowing for the prediction of said values.
+
+* Classification means organizing your data into categories, for example if a drug has IC50 < 0.001mg it activates given enzyme with high affinity, if < 0.01 then it's "not bad" etc.
+
+* Mixed approach is when models rely on regression results while classifying data.
+\
+\
+
+Overall, regression algorithm can predict a *discrete value* in a form of an integer, whereas classification algorithm can predict a *continuous value* in a form of class label probability (how big is the probability that a given data point fits into the given category/group).
+\
+
+This means an algorithm checking whether an email is a Spam or not - has to be classification-based, whereas an algorithm for the prediction of height of students should be based on regression, given that height is a continuous value. To put it differently, classification can tell you whether tomorrow is going to be sunny or cold (whereas we need to define ourselves what does it mean that the temperature is cold/hot), while regression will tell you what exact temperature should you expect tomorrow.
+In other words, regression can help you figure out how long does it give for a particular bacterial culture to double its size, but if you wanted to understand how the expression profile of particular genes can be used to detect a given disease - classification algorithms are the way to go!
+
+\
+
+My favorite supervised ML approach is the one based on... a pigeon! You can read more about it [here](https://www.cs.toronto.edu/~lczhang/360/lec/w01/pigeon.html)!
+
+\
+\
+\
+
+
+During our course we'll discuss in details supervised methods:
+
+- *k*-NN (nearest neighbours)
+- support vector machines
+- decision trees and random forests
+- multiple linear regression
+- principle component regression
+
+
+\
+\
+
+
+
+
+
+## Online test
+\
+\
+
+Send the Exercise 1 and 2 to my email: __klaudia.chmielewska@ug.edu.pl__ with the Title format: "DCH2_Name_Class1" (DCH = Digital Chemistry)
+
+\
+\
+\
+
+***
+\
+\
+
+***
+
+
+\
+\
+Klaudia Chmielewska
+
+_klaudia.chmielewska@ug.edu.pl_
+
+
+\
+\
+
+See you in the next lesson!
