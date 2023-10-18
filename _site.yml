@@ -1,0 +1,15 @@
+name: "Introduction to R"
+navbar:
+  title: "Introduction to R"
+  left:
+    - text: "Main"
+      href: index.html
+    - text: "About"
+      href: about.html
+    - text: "Lesson 1"
+      href: session1.html    
+    - text: "Lesson 2"
+      href: lesson_two.html
+    - text: "Lesson 3"
+      href: lesson_three.html
+      

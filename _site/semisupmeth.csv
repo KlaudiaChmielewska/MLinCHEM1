@@ -1,0 +1,6 @@
+Methods,Advantages,Disadvantages,Data required,Computation cost
+Self-training,Easy implementation; No model structure restriction,Training error accumulation; Dependence on the initial model,Large,Low
+Co-training,Easy implementation; No model structure restriction; High modeling efficiency,Training error accumulation; Difficult in model selection,Median,Median
+Probabilistic generative models,Model interpretation; Noise description; High modeling efficiency,Dependence on assumed data distribution,Large,Median
+Graph-based methods,Wide range of applications; Efficient in using data samples; Robust to outliers,Complex computational burden; High storage space,Median,High
+Active learning approaches,Easy implementation; High modeling accuracy,Need human efforts,Median,High
