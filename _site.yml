@@ -13,3 +13,4 @@ navbar:
     - text: "Lesson 3"
       href: lesson_three.html
       
+output_dir: docs
