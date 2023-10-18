@@ -1,12 +1,29 @@
 ---
-title: "About This Website"
+title: "__Machine Learning in Chemistry__"
+subtitle: "*2023/2024*"
+author: "__*Klaudia Chmielewska*__"
+output:    
+  html_document:
+    theme: darkly
+    df_print: paged
+    highlight: tango #code highlighter
+    css: style.css 
 ---
 
 Dear students,
+\
+\
 
 On this site you'll find scripts for the Machine Learning in Chemistry class.
+\
+
 
 If you want, you can let me know how did you find this course here: [link to be provided].
+\
+\
+\
+
+
 
 Klaudia Chmielewska
 University of Gdansk
