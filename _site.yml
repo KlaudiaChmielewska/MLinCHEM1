@@ -3,7 +3,7 @@ navbar:
   title: "Introduction to R"
   left:
     - text: "Main"
-      href: index.html
+      href: docs/index.html
     - text: "About"
       href: about.html
     - text: "Lesson 1"
