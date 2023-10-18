@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Klaudia Chmielewska" />
+
+
+<title>ML in chem</title>
+
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/darkly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/tabwid-1.1.3/tabwid.css" rel="stylesheet" />
+<script src="site_libs/tabwid-1.1.3/tabwid.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Introduction to R</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Main</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="session1.html">Lesson 1</a>
+</li>
+<li>
+  <a href="lesson_two.html">Lesson 2</a>
+</li>
+<li>
+  <a href="lesson_three.html">Lesson 3</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore"><strong>ML in chem</strong></h1>
+<h3 class="subtitle"><em>Lesson 1</em></h3>
+<h4 class="author"><strong><em>Klaudia Chmielewska</em></strong></h4>
+
+</div>
+
+
+<p><br />
+</p>
+<div id="what-is-ml" class="section level1">
+<h1><em><span style="text-decoration:underline">What is
+ML?</span></em></h1>
+<p><br />
+</p>
+<div id="why-are-cats-afraid-of-cucumbers" class="section level2">
+<h2>Why are cats afraid of cucumbers?</h2>
+<p><br />
+</p>
+<p>Of course it has to do with the fact that the cucumber looks a little
+bit like a snake, which to the cat is a clear information -
+“DANGER!”!!</p>
+<p><br />
+</p>
+<p>All because the brain likes to recognize the unknown based on the set
+of patterns it already understands. That’s also why you might sometimes
+feel like a bug is on your skin - though it’s just your hair! Or when we
+recognize shadows of our hands on the wall as animals!<br />
+</p>
+<div class = "row">
+
+<div class="col-md-6">
+<div class="float">
+<img src="shocked_cat.jpg"
+alt="Shocked cat, right before the hiss and run!" />
+<div class="figcaption"><strong><em>Shocked cat, right before the hiss
+and run!</em></strong></div>
+</div>
+</div>
+<div class = "row">
+
+<div class="col-md-6">
+<div class="float">
+<img src="shadow.jpg" alt="Is it a dog or just hands…?" />
+<div class="figcaption"><strong><em>Is it a dog or just
+hands…?</em></strong></div>
+</div>
+</div>
+<p><br />
+<br />
+</p>
+<p>This means we visualize a pattern allowing us to predict the outcome
+in given situations. We attribute different values to known outcomes in
+order to better adapt to our reality. Hence your dreams might sometimes
+be about the situations you’re afraid about - in order to give you the
+opportunity to see how would you handle it when the time comes!<br />
+<br />
+</p>
+<p>Predicting what may happen next allows us to be more prepared. If we
+know a hurricane is coming, we can evacuate the cities earlier, if we
+predict the weather for the next day we might avoid getting caught in
+the rain without an umbrella, etc.<br />
+</p>
+<p>From your daily life, you surely had noticed that some of you mails
+are automatically marked as spam - this also happens due to a pattern
+visible in many of such mails, which enabled to flag them as Spam
+indeed.<br />
+<br />
+</p>
+<p>We can create algorithms able to see patterns just as a human
+eye!<br />
+</p>
+<p>This way we don’t need anyone who would go through your mails to tell
+whether they are Spam or not - but rather an algorithm, which checks
+text for specific elements, which might suggest it’s Spam.<br />
+<br />
+</p>
+<p>Of course, if given enough data, such algorithm can also predict
+chemical or biological outcomes, for example we could build an algorithm
+to predict the solubility, stability or ADMET of a particular molecule;
+find binding site of enzymes with medical relevance, predict best
+synthetic routes for drugs or define probable toxicity.<br />
+<br />
+</p>
+<hr />
+<p><br />
+</p>
+</div>
+<div id="applications---types-of-studies" class="section level2">
+<h2>Applications - types of studies</h2>
+<p><br />
+</p>
+<ul>
+<li>Property / Activity Prediction through QSAR/QSPR <a
+href="https://doi.org/10.2174/1570163817666200316104404">1</a>, <a
+href="https://doi.org/10.1021/acsomega.2c03062">2</a>, <a
+href="https://doi.org/10.1021/acs.jcim.2c01422">3</a>, <a
+href="https://doi.org/10.1080/07391102.2022.2109753">4</a></li>
+<li>Quantum Mechanics and Density Functional Theory <a
+href="https://doi.org/10.1021/acs.jcim.9b00439">1</a>, <a
+href="https://doi.org/10.1038/s41467-020-19093-1">2</a>, <a
+href="https://doi.org/10.1038/s41524-020-0310-0">3</a></li>
+<li>Force Field Parameter Determination <a
+href="10.1103/PhysRevB.100.014105">1</a>, <a
+href="https://doi.org/10.1021/acscentsci.8b00913">2</a>, <a
+href="https://doi.org/10.1016/j.sbi.2019.12.005">3</a>, <a
+href="https://doi.org/10.1063/1.5126336">4</a></li>
+<li>Partial Atomic Charge Determination <a
+href="https://doi.org/10.1021/acs.jctc.0c01229">1</a>, <a
+href="https://doi.org/10.1021/acs.jcim.0c00273">2</a>, <a
+href="https://doi.org/10.3389/fgene.2019.00990">3</a>, <a
+href="https://doi.org/10.1093/bib/bbaa183">4</a></li>
+<li>Molecular Dynamics <a
+href="https://doi.org/10.1016/j.sbi.2019.12.016">1</a>, <a
+href="https://doi.org/10.1063/5.0059915">2</a>, <a
+href="https://doi.org/10.1016/j.csbj.2020.02.007">3</a>, <a
+href="https://doi.org/10.1007/s10973-019-08762-z">4</a>, <a
+href="https://doi.org/10.1021/acs.jctc.0c00355">5</a>, <a
+href="https://doi.org/10.1016/j.compscitech.2020.108627">6</a></li>
+<li>Virtual Screening <a
+href="https://doi.org/10.1093/bib/bby061">1</a>, <a
+href="https://doi.org/10.1016/j.cbpa.2021.04.009">2</a>, <a
+href="https://doi.org/10.1073/pnas.2000585117">3</a>, <a
+href="https://doi.org/10.1002/wcms.1478">4</a></li>
+<li>Docking (more precise calculations of the binding) <a
+href="https://doi.org/10.1093/bib/bbab072">1</a>, <a
+href="https://doi.org/10.1093/bioinformatics/btab715">2</a></li>
+<li>Binding site prediction <a
+href="https://doi.org/10.1186/s13321-018-0285-8">1</a>, <a
+href="https://doi.org/10.1093/bioinformatics/btaa1005">2</a></li>
+<li>Predicting pKa <a
+href="https://doi.org/10.1016/j.drudis.2022.103372">1</a>, <a
+href="https://doi.org/10.1186/s13321-019-0384-1">2</a></li>
+<li>Spectral data modeling <a
+href="https://doi.org/10.3390/metabo10060243">1</a>, <a
+href="https://doi.org/10.1002/mas.21602">2</a></li>
+<li>Molecule generation <a
+href="https://doi.org/10.3390/polym12010163">1</a>, <a
+href="https://doi.org/10.1021/acs.accounts.0c00699">2</a>, <a
+href="https://doi.org/10.1021/acs.chemrev.3c00189">3</a></li>
+</ul>
+<p><br />
+<br />
+</p>
+</div>
+<div id="applications---topics" class="section level2">
+<h2>Applications - topics</h2>
+<p><br />
+</p>
+<ul>
+<li>Discovering and understanding new materials <a
+href="https://doi.org/10.1021/acsmaterialslett.1c00204">1</a>, <a
+href="https://doi.org/10.1021/jacs.0c09105">2</a>, <a
+href="https://doi.org/10.1038/s41586-018-0337-2">3</a>, <a
+href="https://doi.org/10.1039/D2CS00203E">4</a></li>
+<li>Environmental Chemistry <a
+href="https://doi.org/10.1021/acs.est.1c05970">1</a>, <a
+href="https://doi.org/10.1016/j.cej.2021.131810">2</a></li>
+<li>Medicinal Chemistry (drug design, toxicity prediction etc.) <a
+href="https://www.mdpi.com/1422-0067/19/8/2358">1</a>, <a
+href="https://doi.org/10.1021/acs.chas.0c00075">2</a>, <a
+href="https://doi.org/10.1007/s11030-021-10217-3">3</a>, <a
+href="https://doi.org/10.1016/j.drudis.2017.08.010">4</a>, <a
+href="https://doi.org/10.1016/j.drudis.2016.01.007">5</a></li>
+<li>Computational prediction of protein-drug binding <a
+href="https://doi.org/10.1093/bioinformatics/btaa858">1</a>, <a
+href="https://doi.org/10.1038/s41467-020-18071-x">2</a></li>
+<li>Prediction of metabolism <a
+href="https://doi.org/10.1016/j.coisb.2021.03.001">1</a>, <a
+href="https://doi.org/10.1038/s41467-021-22989-1">2</a></li>
+<li>Photodynamics simulation <a
+href="https://doi.org/10.1021/acs.accounts.2c00288">1</a></li>
+<li>Determining best synthesis route <a
+href="https://doi.org/10.1016/j.trechm.2022.07.005">1</a>, <a
+href="https://doi.org/10.1021/acs.chemrev.1c00033">2</a></li>
+</ul>
+<hr />
+<p><br />
+<br />
+</p>
+</div>
+<div id="exercise-1" class="section level2">
+<h2>Exercise 1</h2>
+<p><br />
+</p>
+<p>Choose 2 applications of ML in chemistry (1 type + 1 topic).</p>
+<p>In a Word document, for BOTH applications:</p>
+<ul>
+<li>Describe how machine learning is used in this branch of science
+(either type or topic)</li>
+<li>Name popular ML algorithms for this type of application (and if
+possible provide an explanation why is that)</li>
+<li>Try to find a publication with a newly proposed algorithm for chosen
+type of application and define why is it potentially useful</li>
+<li>Find out 3 publications regarding chosen topic, write out the
+methods used and define why those particular ones were chosen (your own
+opinion, supplemented with knowledge on a given method or statement of
+the authors)</li>
+<li>Try to define (in points) what would be the steps you’d have to take
+to perform your own study of chosen type/topic<br />
+</li>
+</ul>
+<p>Pro-tip I: You can work in pairs.</p>
+<p>Pro-tip II: You can choose a type and topic which are related to each
+other, like QSAR + Environmental Chemistry, Virtual Screening +
+Medicinal Chemistry, Binding site prediction + Computational prediction
+of protein-drug binding etc.<br />
+<br />
+<br />
+</p>
+<hr />
+<p><br />
+<br />
+</p>
+</div>
+<div id="how-can-bots-learn" class="section level2">
+<h2>How can bots learn?</h2>
+<p><br />
+</p>
+<p>A short answer to this question would be that… we don’t really
+know!<br />
+</p>
+<p>However, there are possible easy representations that more or less
+show the possible processes that eventually make bots learn!<br />
+</p>
+<p><a href="https://www.youtube.com/watch?v=R9OHn5ZF4Uo">Here</a> you
+can understand how the genetic breeding model works!</p>
+<p><a href="https://www.youtube.com/watch?v=wvWpdrfoEv0">Here</a> is a
+little bit about Deep Learning and Recursive Neural Networks</p>
+<p><br />
+<br />
+</p>
+<hr />
+<p><br />
+<br />
+</p>
+</div>
+<div id="steps-for-any-machine-learning-study" class="section level2">
+<h2>Steps for ANY machine learning study</h2>
+<p><br />
+<br />
+</p>
+<p>Click on the bars below to see comments on each of the step.<br />
+<br />
+</p>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.collapsible {
+  background-color: #073973;
+  color: #ffffff;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+.active, .collapsible:hover {
+  background-color: #073973;
+}
+
+.content {
+  padding: 0 18px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+  background-color: #2074d4;
+}
+</style>
+</head>
+<body>
+<button class="collapsible">
+Data Collection
+</button>
+<div class="content">
+<p>
+<p><em>Here we gather the information we want the ML algorithm to
+analyze.</em><br />
+</p>
+<p><em>This means the data set which we know has true outcomes, hence it
+can be a known interaction/toxicity etc. (for ex. IC50, LD50, synthesis
+efficacy %), and aside from chemistry it might be temperature in Poland
+in summer months, used to estimate how hot will the next summer be, or
+it can be a set of pictures, maps etc.</em><br />
+</p>
+<p><em><strong>Before taking any data for analysis, make sure it comes
+from a trusted source!</strong></em></p>
+</p>
+</div>
+<button class="collapsible">
+Data exploration and preparation
+</button>
+<div class="content">
+<p>
+<p><em><strong>!MOST CRUCIAL STEP!</strong></em><br />
+</p>
+<p><em>Given that the quality of our results depend on the quality of
+data we use, we need to go through our data set to make sure it presents
+only the relevant and precise data.</em><br />
+</p>
+<p><em>This means before we go further with our analysis, we need to
+clean, tidy up our data set, get rid of potentially noisy/messy points.
+Aside from that, we need to make sure whether we have NAs and if the
+data set is written in a logical way (whether the columns work fine, is
+the title of the column understandable for the computer, are there any
+columns we don’t need for the analysis, does the data set present one
+type of data for each column - which means “Is the column
+self-explanatory and contains only one type of data? Because if my IC50
+column also contains LD50 values then I have to divide those two into
+two different columns”).</em><br />
+</p>
+<p><em>This step allows you to better understand your data set, see its
+possible perks and possibilities to answer specific problems. You can
+also run several graphs to see how the data set looks like, visualize
+potential differences etc.. Thanks to that, you’ll know which ML model
+might be best too. You’ll also gain an understanding of what can you
+find from the data set you chose.</em><br />
+</p>
+<p><em>This is also the right time to perform preprocessing step - the
+dimensionality reduction (which we’ll later discuss in more details),
+which means grouping data and deleting potential outliers, in order to
+improve the performance of our chosen ML model. Here, you can use
+unsupervised ML methods to group your data.</em><br />
+</p>
+<p><em>Last but not least, here is when we split the data into two parts
+- one with the aim to train our (soon chosen) model (majority of the
+whole set) and the second, to evaluate whether the model we trained
+really is able to predict the values with good probability. It’s best to
+use train/eval split around 80/20 or 70/30 (meaning 70% of data points
+are attributed to the testing set and remaining 30% would be used to
+evaluate the model).</em></p>
+</p>
+</div>
+<button class="collapsible">
+Choosing an algorithm and relevant descriptors
+</button>
+<div class="content">
+<p>
+<p><em>Now, knowing your data set a little, you’re able to decide which
+ALGORITHM might be best for your hypothesis/scientific problem, and run
+it through your data to create the models (Remember this! Algorithm is a
+set of tasks performed on your data in order to recognize its patterns
+and rules in order to create ML models; while model is the output of ML
+algorithm run on data, acting like programs).</em><br />
+</p>
+<p><em>Image data algorithms will be different than text-based data.
+Same goes for algorithms in different types of chemistry fields - a good
+algorithm for virtual screening will not work well for pKa prediction
+and vice versa.</em><br />
+</p>
+<p><em>Take your time while choosing the right algorithm! Find the one
+that best fits your data. Otherwise, your results won’t bring you
+anything relevant.</em><br />
+</p>
+<p><em>You’ll also need to define the features/independent
+variables/descriptors you use in order to train your model (this helps
+you reduce the complexity of data and reduce the chance for
+overfitting).</em></p>
+</p>
+</div>
+<button class="collapsible">
+Model building and training
+</button>
+<div class="content">
+<p>
+<p><em>Now it’s simply time to feed our algorithm with data and see how
+the created models are able to predict the values. How accurate are the
+models? How far from the true, experimental value, is their
+prediction?</em></p>
+</p>
+</div>
+<button class="collapsible">
+Model evaluation
+</button>
+<div class="content">
+<p>
+<p><em>Now we can test our models on the previously unseen data, which
+we still have the experimental values for. This is a little bit like
+checking whether the model is working well with the new data. We can
+observe whether its quality is still good, as seen previously during
+testing phase.</em><br />
+</p>
+<em>In a nutshell, here you evaluate how well does the model “learn from
+experience”.</em>
+</p>
+</div>
+<button class="collapsible">
+Model improvement
+</button>
+<div class="content">
+<p>
+<p><em>Here we define how can we eventually enhance our models accuracy,
+or dismiss the model altogether if we see the other might have more
+potential. Eventually, we can now decide to feed the algorithm with more
+data and compare the efficiency of the new models created.</em></p>
+</p>
+</div>
+<button class="collapsible">
+Prediction
+</button>
+<div class="content">
+<p>
+<em>Now, being sure of our models accuracy, we let it run on the data
+set we want to predict the specific values for, prepare the graphs,
+analysis and discussion. It’s a good practice to use different ML
+algorithms for comparison of the results, hence statistically showing
+the significance of said results.</em>
+</p>
+</div>
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.maxHeight){
+      content.style.maxHeight = null;
+    } else {
+      content.style.maxHeight = content.scrollHeight + "px";
+    } 
+  });
+}
+</script>
+</body>
+</html>
+<p><br />
+<br />
+</p>
+<hr />
+<p><br />
+</p>
+</div>
+<div id="types-of-ml" class="section level2">
+<h2>Types of ML</h2>
+<p><br />
+</p>
+<p>Basically, we can divide machine learning algorithms by how they are
+taught:<br />
+</p>
+<ul>
+<li>supervised learning</li>
+<li>unsupervised learning</li>
+<li>semi-supervised learning</li>
+<li>reinforcement learning<br />
+</li>
+</ul>
+<p>Supervision here does not mean a human needs to tell the algorithm
+how to understand the data, but rather means feeding the algorithm with
+what it has to learn (data labeled as input and output during training)
+and how. Unsupervised methods works on an unlabelled/raw data and learns
+its possible connections itself.<br />
+</p>
+<p><strong>Supervised learning</strong> can help us classify data into
+specific categories (“Is this message Spam or not?”, “Is this picture a
+bee or a three?”), with examples being linear classifiers, support
+vector machines, decision trees and random forest algorithm; or help us
+understand the relationship between the dependent and independent
+variables (regression algorithms, like logistic or polynomial
+regression).<br />
+</p>
+<p>On the other hand, <strong>unsupervised learning</strong> algorithms
+work on an unlabeled data, trying to figure out the set on its own, by
+grouping the data and clustering it. Unsupervised learning usually
+complements the supervised learning in order to obtain the most precise
+results.<br />
+</p>
+<p>Three main tasks of unsupervised learning are:<br />
+</p>
+<ul>
+<li>clustering (assigning data points into groups, based on their
+similarities)</li>
+<li>association (seeking relationships between different
+variables/features)</li>
+<li>dimensionality reduction (used if the number of features/data points
+is too big, as it reduces the number of data points in the set without
+loosing the integrity of the data, can be used as a preprocessing step,
+as mentioned earlier, in order to remove noise)</li>
+</ul>
+<p><br />
+</p>
+<p>Interestingly, there is a “why not both?” option as well -
+<strong>semi-supervised</strong> learning! It is a technique where small
+portion of data is labeled, and other are not. The major drawback of
+supervised learning algorithms is that the require labeling the data,
+which might be complicated, especially with a huge data set. Generally
+it’s an approach useful when we cannot find fully labeled data sets and
+find it very hard and time consuming to label it by hand (when we have
+easily obtainable data, but hard to label).</p>
+<p>You can read more on that type of learning <a
+href="https://www.altexsoft.com/blog/semi-supervised-learning/">here</a>.</p>
+<p>Labeled points will be treated as a script telling us what classes
+does our data set provide and which clusters of data correspond to which
+class. Further, the unlabeled data will be classified based on the
+labeled set analogy. This combined approach is useful when our data set
+is not all labeled and is a huge set of points or when we just want to
+increase the accuracy of the models otherwise used. Image and speech
+recognition are one of the most known examples of semi-supervised
+learning.<br />
+<br />
+<br />
+</p>
+<p>Finally, <strong>reinforcement learning</strong> is a method of
+“learning from mistakes”, where there are rewards and punishments for
+the algorithm. Training goal for such algorithm would be to find a
+suitable action model which would maximize the number of rewards given.
+More or less it is a bit like training a dog - after a while, the dog
+will get more excited to perform tasks which he knows he gains most
+treats from and will even start the sequence himself, knowing it might
+result in getting more treats. In another way, many video games have a
+lvl system, where when you gain a new level you also receive new
+abilities, rewards and basically can do more cool stuff!</p>
+<p><br />
+</p>
+<p>Overall:</p>
+<ul>
+<li><p>supervised algorithms can explain how long is your bus commute to
+the University based on the time you left home (whether it was 7AM or
+10AM, there are going to be less or more buses around and more or less
+traffic)</p></li>
+<li><p>unsupervised algorithms can tell you what time in a day does the
+traffic occur more often</p></li>
+<li><p>semi-supervised learning will check how long would your bus
+commute take, dependent on the time you left home, traffic and the bus
+line you decide to take (which you can label as more/less busy in given
+hours)</p></li>
+<li><p>reinforcement learning will let you know which road might be more
+busy (more potential traffic) on the time you leave home, so that you
+can avoid longer bus commute (and take a different bus)</p></li>
+</ul>
+<p><br />
+<br />
+<br />
+</p>
+<p><strong><em>During our course, we’ll discuss in detail those types of
+ML learning, its popular algorithms and their outcomes; and try to apply
+learned methods in order to analyze different data sets. Given that you
+learned some of the unsupervised methods during other classes, our focus
+will fall out of this scope, with more care put onto other types of
+learning.</em></strong><br />
+<br />
+<br />
+</p>
+<hr />
+<p><br />
+<br />
+</p>
+</div>
+</div>
+<div id="semi-supervised-learning" class="section level1">
+<h1><em><span style="text-decoration:underline">Semi-supervised
+learning</span></em></h1>
+<p><br />
+</p>
+<p>As mentioned, semi-supervised learning is a way between supervised
+and unsupervised learning.</p>
+<p>You’re already familiar with PCA. Interestingly, its combination with
+a supervised dimensionality reduction approach FDA (Fisher Discriminant
+Analysis) is a semi-supervised method, called SFDA.</p>
+<p>We can combine different types of algorithms, in order to broaden
+their applicability to more topics (more complex ones too!).<br />
+</p>
+<p>We have 5 most important semi-supervised data modeling method
+types:<br />
+<br />
+</p>
+<ul>
+<li>self-training <a href="https://doi.org/10.1093/bib/bbab109">1</a>,
+<a href="https://doi.org/10.1016/j.ces.2022.117459">2</a>, <a
+href="https://doi.org/10.1016/j.eswa.2020.113569">3</a>, <a
+href="https://doi.org/10.1186/s12859-019-3274-7">4</a></li>
+<li>co-training <a href="https://doi.org/10.3390/s23094392">1</a>, <a
+href="https://doi.org/10.1016/j.compchemeng.2021.107418">2</a>, <a
+href="https://doi.org/10.3390/atmos14010143">3</a>, <a
+href="https://doi.org/10.1016/j.media.2020.101766">4</a>, <a
+href="https://doi.org/10.1016/j.patcog.2020.107269">5</a></li>
+<li>probabilistic generative models <a
+href="https://doi.org/10.1016/j.ymssp.2020.106653">1</a>, <a
+href="https://doi.org/10.1016/j.compbiolchem.2015.02.002">2</a>, <a
+href="https://doi.org/10.3389/fgene.2019.01243">3</a></li>
+<li>graph-based methods <a
+href="https://doi.org/10.1016/j.compbiomed.2023.107199">1</a>, <a
+href="https://doi.org/10.1145/3522664.3528606">2</a>, <a
+href="10.1109/ACCESS.2020.3033589">3</a>, <a
+href="https://doi.org/10.1007/s10796-016-9724-0">4</a></li>
+<li>active learning approaches <a
+href="https://doi.org/10.1038/s41598-018-31395-5">1</a>, <a
+href="https://doi.org/10.1371/journal.pone.0162075">2</a>, <a
+href="https://doi.org/10.1016/j.cmpbup.2023.100096">3</a>. <a
+href="https://doi.org/10.1016/j.geoderma.2020.114830">4</a><br />
+<br />
+</li>
+</ul>
+<p>Table below presents those methods in a short manner ( <a
+href="https://doi.org/10.1016/j.ifacsc.2021.100150">source</a> ) :</p>
+<div class="tabwid"><style>.cl-7516a0f2{}.cl-750943ee{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-750e5dd4{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-750e7ac6{width:2.4in;background-color:rgba(255, 255, 255, 1.00);vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-750e7aee{width:5.524in;background-color:rgba(255, 255, 255, 1.00);vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-750e7af8{width:4.412in;background-color:rgba(255, 255, 255, 1.00);vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-750e7b02{width:1.211in;background-color:rgba(255, 255, 255, 1.00);vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-750e7b2a{width:1.474in;background-color:rgba(255, 255, 255, 1.00);vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-750e7b2b{width:2.4in;background-color:rgba(255, 255, 255, 1.00);vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-750e7b34{width:5.524in;background-color:rgba(255, 255, 255, 1.00);vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-750e7b3e{width:4.412in;background-color:rgba(255, 255, 255, 1.00);vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-750e7b52{width:1.211in;background-color:rgba(255, 255, 255, 1.00);vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-750e7b53{width:1.474in;background-color:rgba(255, 255, 255, 1.00);vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-750e7b5c{width:2.4in;background-color:rgba(255, 255, 255, 1.00);vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-750e7b66{width:5.524in;background-color:rgba(255, 255, 255, 1.00);vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-750e7b67{width:4.412in;background-color:rgba(255, 255, 255, 1.00);vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-750e7b70{width:1.211in;background-color:rgba(255, 255, 255, 1.00);vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-750e7b71{width:1.474in;background-color:rgba(255, 255, 255, 1.00);vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-750e7b84{width:2.4in;background-color:rgba(255, 255, 255, 1.00);vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-750e7b8e{width:5.524in;background-color:rgba(255, 255, 255, 1.00);vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-750e7b98{width:4.412in;background-color:rgba(255, 255, 255, 1.00);vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-750e7ba2{width:1.211in;background-color:rgba(255, 255, 255, 1.00);vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-750e7ba3{width:1.474in;background-color:rgba(255, 255, 255, 1.00);vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing='true' class='cl-7516a0f2'><thead><tr style="overflow-wrap:break-word;"><th class="cl-750e7ac6"><p class="cl-750e5dd4"><span class="cl-750943ee">Methods</span></p></th><th class="cl-750e7aee"><p class="cl-750e5dd4"><span class="cl-750943ee">Advantages</span></p></th><th class="cl-750e7af8"><p class="cl-750e5dd4"><span class="cl-750943ee">Disadvantages</span></p></th><th class="cl-750e7b02"><p class="cl-750e5dd4"><span class="cl-750943ee">Data.required</span></p></th><th class="cl-750e7b2a"><p class="cl-750e5dd4"><span class="cl-750943ee">Computation.cost</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-750e7b2b"><p class="cl-750e5dd4"><span class="cl-750943ee">Self-training</span></p></td><td class="cl-750e7b34"><p class="cl-750e5dd4"><span class="cl-750943ee">Easy implementation; No model structure restriction</span></p></td><td class="cl-750e7b3e"><p class="cl-750e5dd4"><span class="cl-750943ee">Training error accumulation; Dependence on the initial model</span></p></td><td class="cl-750e7b52"><p class="cl-750e5dd4"><span class="cl-750943ee">Large</span></p></td><td class="cl-750e7b53"><p class="cl-750e5dd4"><span class="cl-750943ee">Low</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-750e7b2b"><p class="cl-750e5dd4"><span class="cl-750943ee">Co-training</span></p></td><td class="cl-750e7b34"><p class="cl-750e5dd4"><span class="cl-750943ee">Easy implementation; No model structure restriction; High modeling efficiency</span></p></td><td class="cl-750e7b3e"><p class="cl-750e5dd4"><span class="cl-750943ee">Training error accumulation; Difficult in model selection</span></p></td><td class="cl-750e7b52"><p class="cl-750e5dd4"><span class="cl-750943ee">Median</span></p></td><td class="cl-750e7b53"><p class="cl-750e5dd4"><span class="cl-750943ee">Median</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-750e7b5c"><p class="cl-750e5dd4"><span class="cl-750943ee">Probabilistic generative models</span></p></td><td class="cl-750e7b66"><p class="cl-750e5dd4"><span class="cl-750943ee">Model interpretation; Noise description; High modeling efficiency</span></p></td><td class="cl-750e7b67"><p class="cl-750e5dd4"><span class="cl-750943ee">Dependence on assumed data distribution</span></p></td><td class="cl-750e7b70"><p class="cl-750e5dd4"><span class="cl-750943ee">Large</span></p></td><td class="cl-750e7b71"><p class="cl-750e5dd4"><span class="cl-750943ee">Median</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-750e7b2b"><p class="cl-750e5dd4"><span class="cl-750943ee">Graph-based methods</span></p></td><td class="cl-750e7b34"><p class="cl-750e5dd4"><span class="cl-750943ee">Wide range of applications; Efficient in using data samples; Robust to outliers</span></p></td><td class="cl-750e7b3e"><p class="cl-750e5dd4"><span class="cl-750943ee">Complex computational burden; High storage space</span></p></td><td class="cl-750e7b52"><p class="cl-750e5dd4"><span class="cl-750943ee">Median</span></p></td><td class="cl-750e7b53"><p class="cl-750e5dd4"><span class="cl-750943ee">High</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-750e7b84"><p class="cl-750e5dd4"><span class="cl-750943ee">Active learning approaches</span></p></td><td class="cl-750e7b8e"><p class="cl-750e5dd4"><span class="cl-750943ee">Easy implementation; High modeling accuracy</span></p></td><td class="cl-750e7b98"><p class="cl-750e5dd4"><span class="cl-750943ee">Need human efforts</span></p></td><td class="cl-750e7ba2"><p class="cl-750e5dd4"><span class="cl-750943ee">Median</span></p></td><td class="cl-750e7ba3"><p class="cl-750e5dd4"><span class="cl-750943ee">High</span></p></td></tr></tbody></table></div>
+<p><br />
+<br />
+<br />
+</p>
+<div id="exercise-2" class="section level2">
+<h2>Exercise 2</h2>
+<p><br />
+</p>
+<p>In a group of 2 or 3 people <em>pick 1 of the semi-supervised
+methods</em> above and:</p>
+<ul>
+<li>create an explanation of it, how it works (if possible, include the
+graphic showing steps of algorithm implementation)</li>
+<li>define what kind of problems can it solve (give examples of
+hypotheses to solve with this learning method)</li>
+<li>find 2 research papers (different than ones above!) that use your
+particular learning method, describe their premise and conclusions in up
+to 6 sentences</li>
+</ul>
+<p><br />
+<br />
+</p>
+</div>
+<div id="mixmatch" class="section level2">
+<h2>MixMatch</h2>
+<p><a href="https://www.youtube.com/watch?v=0O1UXKh-Yck">1</a></p>
+<p><a href="https://www.youtube.com/watch?v=bGEDjhbSHmg">2</a></p>
+<p><a href="https://github.com/google-research/mixmatch">3</a></p>
+</div>
+<div id="instructmol" class="section level2">
+<h2>InstructMol</h2>
+<p><a href="https://github.com/smiles724/InstructMol">1</a></p>
+<p><br />
+<br />
+</p>
+<hr />
+<p><br />
+<br />
+</p>
+</div>
+</div>
+<div id="supervised-learning" class="section level1">
+<h1><em><span style="text-decoration:underline">Supervised
+learning</span></em></h1>
+<p><br />
+<br />
+</p>
+<p>Creating models based on supervised learning rely on regression,
+classification and mixed approaches.<br />
+<br />
+</p>
+<ul>
+<li><p>Regression is something you probably did many times - it checks
+how data changes inside one variable (like time) and whether there are
+aspects allowing for the prediction of said values.</p></li>
+<li><p>Classification means organizing your data into categories, for
+example if a drug has IC50 &lt; 0.001mg it activates given enzyme with
+high affinity, if &lt; 0.01 then it’s “not bad” etc.</p></li>
+<li><p>Mixed approach is when models rely on regression results while
+classifying data.<br />
+<br />
+</p></li>
+</ul>
+<p>Overall, regression algorithm can predict a <em>discrete value</em>
+in a form of an integer, whereas classification algorithm can predict a
+<em>continuous value</em> in a form of class label probability (how big
+is the probability that a given data point fits into the given
+category/group).<br />
+</p>
+<p>This means an algorithm checking whether an email is a Spam or not -
+has to be classification-based, whereas an algorithm for the prediction
+of height of students should be based on regression, given that height
+is a continuous value. To put it differently, classification can tell
+you whether tomorrow is going to be sunny or cold (whereas we need to
+define ourselves what does it mean that the temperature is cold/hot),
+while regression will tell you what exact temperature should you expect
+tomorrow. In other words, regression can help you figure out how long
+does it give for a particular bacterial culture to double its size, but
+if you wanted to understand how the expression profile of particular
+genes can be used to detect a given disease - classification algorithms
+are the way to go!</p>
+<p><br />
+</p>
+<p>My favorite supervised ML approach is the one based on… a pigeon! You
+can read more about it <a
+href="https://www.cs.toronto.edu/~lczhang/360/lec/w01/pigeon.html">here</a>!</p>
+<p><br />
+<br />
+<br />
+</p>
+<p>During our course we’ll discuss in details supervised methods:</p>
+<ul>
+<li><em>k</em>-NN (nearest neighbours)</li>
+<li>support vector machines</li>
+<li>decision trees and random forests</li>
+<li>multiple linear regression</li>
+<li>principle component regression</li>
+</ul>
+<p><br />
+<br />
+</p>
+<div id="online-test" class="section level2">
+<h2>Online test</h2>
+<p><br />
+<br />
+</p>
+<p>Send the Exercise 1 and 2 to my email: <strong><a
+href="mailto:klaudia.chmielewska@ug.edu.pl"
+class="email">klaudia.chmielewska@ug.edu.pl</a></strong> with the Title
+format: “DCH2_Name_Class1” (DCH = Digital Chemistry)</p>
+<p><br />
+<br />
+<br />
+</p>
+<hr />
+<p><br />
+<br />
+</p>
+<hr />
+<p><br />
+<br />
+Klaudia Chmielewska</p>
+<p><em><a href="mailto:klaudia.chmielewska@ug.edu.pl"
+class="email">klaudia.chmielewska@ug.edu.pl</a></em></p>
+<p><br />
+<br />
+</p>
+<p>See you in the next lesson!</p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
