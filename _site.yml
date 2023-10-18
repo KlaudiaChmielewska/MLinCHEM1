@@ -1,11 +1,11 @@
-name: "Introduction to R"
+name: "ML in chem"
 navbar:
-  title: "Introduction to R"
+  title: "Machine Learning in Chemistry"
+  author: "Klaudia Chmielewska"
+  date: "2023"
   left:
     - text: "Main"
-      href: docs/index.html
-    - text: "About"
-      href: about.html
+      href: index.html
     - text: "Lesson 1"
       href: session1.html    
     - text: "Lesson 2"
