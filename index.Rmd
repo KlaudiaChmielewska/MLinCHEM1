@@ -9,6 +9,12 @@ output:
     highlight: tango #code highlighter
     css: style.css 
 ---
+\
+\
+\
+
+
+
 
 Dear students,
 \
@@ -26,7 +32,15 @@ If you want, you can let me know how did you find this course here: [link to be 
 
 
 Klaudia Chmielewska
+\
+
 University of Gdansk
+\
+
 Faculty of Chemistry
-G320
+\
+
+Room G320
+\
+
 klaudia.chmielewska@ug.edu.pl
