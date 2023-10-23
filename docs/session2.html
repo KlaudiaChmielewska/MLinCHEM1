@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Klaudia Chmielewska" />
+
+
+<title>ML in chem</title>
+
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/darkly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #204a87; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #204a87; font-weight: bold; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Machine Learning in Chemistry</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Main</a>
+</li>
+<li>
+  <a href="session1.html">Lesson 1</a>
+</li>
+<li>
+  <a href="session2.html">Lesson 2</a>
+</li>
+<li>
+  <a href="lesson_three.html">Lesson 3</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore"><strong>ML in chem</strong></h1>
+<h3 class="subtitle"><em>Lesson 2</em></h3>
+<h4 class="author"><strong><em>Klaudia Chmielewska</em></strong></h4>
+
+</div>
+
+
+<p><br />
+</p>
+<div id="how-do-they-think" class="section level1">
+<h1><em><span style="text-decoration:underline">How do they
+think?</span></em></h1>
+<p><br />
+</p>
+<p>One way to differentiate between machine learning algorithms is by
+how they <strong>generalize</strong>, which means how models are able to
+create assumptions on data previously not seen (new data points, not the
+points it was trained on).<br />
+</p>
+<p>Two main approaches are:<br />
+</p>
+<ul>
+<li>instance-based learning (memory-based learning) [nonparametric:
+Decision Trees, k-NN] – compare new data points with those seen in
+training</li>
+<li>model-based training [parametric: linear regression] – create a
+system with a predictive model which analyzes whether the predicted
+value would change dependent on other variables<br />
+<br />
+</li>
+</ul>
+</div>
+<div id="knn" class="section level1">
+<h1><em><span style="text-decoration:underline">kNN</span></em></h1>
+<p><br />
+</p>
+<div id="basics" class="section level2">
+<h2>Basics</h2>
+<p><br />
+</p>
+<p>k-NearestNeighbours is considered to be the simplest method of
+supervised learning - and thus became one of the most commonly used.
+k-NN represents a non-parametric method, hence uses instance-based
+learning technique to analyze data. Although generally fit for both
+classification and regression tasks, it is usually used for the former,
+where it assumes that similar points can be found near one
+another.<br />
+</p>
+<p>Generally, k-NN works believing data points can be attributed to
+classes with the highest number of common points/traits. This means if
+we tried to build an algorithm able to guess a price of cancer drugs,
+k-NN would group the dataset based on different aspects, like demand,
+synthesis route, type of chemicals used, transport fees and country of
+origin, making several assumptions on the correlation between points.
+Such groups will now be classes, which will have similar computed
+values.<br />
+<br />
+</p>
+<p>This means k-NN could potentially be used on a dataset of SMILES,
+which we’d want to attribute to different classes like “carboxylic
+acids” or “basic salts” etc. The algorithm would first look at a new
+SMILES, then look at the textbook it has, with the training data it
+acquired from us - and find whether a given substance has a -COOH group
+in order to put it in the “carboxylic acids” class.<br />
+</p>
+<p>Hence, k-NN algorithm identifies the nearest neighbors, the most
+similar points. To do that, we first need to define a maximum amount of
+nearest neighbors inside a the class, as well as calculate the distance
+between a newly presented data point and the rest of the data.</p>
+<p><br />
+</p>
+<p>We can choose from:<br />
+</p>
+<ul>
+<li>Euclidean distance [real-valued vectors, measures a straight line
+between points]</li>
+<li>Manhattan distance</li>
+<li>Minkowski distance</li>
+<li>Hamming distance<br />
+<br />
+</li>
+</ul>
+</div>
+<div id="advantages" class="section level2">
+<h2>Advantages</h2>
+<p><br />
+</p>
+<p>k-NN is useful in data preprocessing, where it is able to estimate
+probable value of missing data values in the set [missing data
+imputation]. It can also group our cookies in order to provide automatic
+recommendations, can identify handwriting - as well as create
+predictions on most likely occuring gene expression profiles,
+progressing risk of cancer or any other disease etc.<br />
+</p>
+<p>Its biggest advantage is its simplicity, easy adaptation and requires
+a scarce amount of parameters (k value and a distance metric).<br />
+</p>
+</div>
+<div id="disadvantages" class="section level2">
+<h2>Disadvantages</h2>
+<p><br />
+</p>
+<p>Given that k-NN is memory-based, it unfortunately lacks the ability
+to scale well, which means it works slowly, takes up a lot of memory and
+data storage and can ask for our patience. It also doesn’t work well
+with huge sets of data and is prone to overfitting. Additionally, it’s
+results rely very much on our chosen value of k. If we choose a value
+too low, we might find ourselves with a model overfitting the data,
+while a k too high can result in the underfitting, smoothing out the
+prediction values, generalizing them more.</p>
+<p><br />
+</p>
+</div>
+<div id="k-nn-steps" class="section level2">
+<h2>k-NN steps</h2>
+<p><br />
+</p>
+<ol style="list-style-type: decimal">
+<li>Select <strong>k</strong> of neighbors.</li>
+<li>Calculate distance of <strong>k</strong> number of neighbors.</li>
+<li>Find nearest neighbours to that distance.</li>
+<li>Count the number of data points in each category.</li>
+<li>Assign new data points to the category with the highest number of
+neighbors present.</li>
+</ol>
+<p><br />
+<br />
+</p>
+<hr />
+<p><br />
+<br />
+</p>
+</div>
+</div>
+<div id="coding" class="section level1">
+<h1><em><span style="text-decoration:underline">Coding</span></em></h1>
+<p><br />
+<br />
+</p>
+<div id="python" class="section level2">
+<h2>Python</h2>
+<p><br />
+</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># importing libraries  </span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>import numpy as nm  </span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>import matplotlib.pyplot as mtp  </span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>import pandas as pd  </span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>  </span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="co">#importing datasets</span></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>data_set<span class="ot">=</span> <span class="fu">pd.read_csv</span>(<span class="st">&#39;User_Data.csv&#39;</span>)  </span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>  </span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a><span class="co">#Extracting Independent and dependent Variable  </span></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>x<span class="ot">=</span> data_set.iloc[<span class="sc">:</span>, [<span class="dv">2</span>,<span class="dv">3</span>]].values  </span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>y<span class="ot">=</span> data_set.iloc[<span class="sc">:</span>, <span class="dv">4</span>].values  </span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>  </span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a><span class="co"># Splitting the dataset into training and test set.  </span></span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a>from sklearn.model_selection import train_test_split  </span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>x_train, x_test, y_train, y_test<span class="ot">=</span> <span class="fu">train_test_split</span>(x, y, <span class="at">test_size=</span> <span class="fl">0.25</span>, <span class="at">random_state=</span><span class="dv">0</span>)  </span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a>  </span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a><span class="co">#feature Scaling  </span></span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a>from sklearn.preprocessing import StandardScaler    </span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a>st_x<span class="ot">=</span> <span class="fu">StandardScaler</span>()    </span>
+<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a>x_train<span class="ot">=</span> <span class="fu">st_x.fit_transform</span>(x_train)    </span>
+<span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a>x_test<span class="ot">=</span> <span class="fu">st_x.transform</span>(x_test) </span>
+<span id="cb1-23"><a href="#cb1-23" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" tabindex="-1"></a><span class="co">#Fitting K-NN classifier to the training set  </span></span>
+<span id="cb1-25"><a href="#cb1-25" tabindex="-1"></a>from sklearn.neighbors import KNeighborsClassifier  </span>
+<span id="cb1-26"><a href="#cb1-26" tabindex="-1"></a>classifier<span class="ot">=</span> <span class="fu">KNeighborsClassifier</span>(<span class="at">n_neighbors=</span><span class="dv">5</span>, <span class="at">metric=</span><span class="st">&#39;minkowski&#39;</span>, <span class="at">p=</span><span class="dv">2</span> )  </span>
+<span id="cb1-27"><a href="#cb1-27" tabindex="-1"></a><span class="fu">classifier.fit</span>(x_train, y_train)  </span>
+<span id="cb1-28"><a href="#cb1-28" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" tabindex="-1"></a><span class="co">#Predicting the test set result  </span></span>
+<span id="cb1-30"><a href="#cb1-30" tabindex="-1"></a>y_pred<span class="ot">=</span> <span class="fu">classifier.predict</span>(x_test)  </span>
+<span id="cb1-31"><a href="#cb1-31" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" tabindex="-1"></a>from sklearn.metrics import confusion_matrix  </span>
+<span id="cb1-33"><a href="#cb1-33" tabindex="-1"></a>cm<span class="ot">=</span> <span class="fu">confusion_matrix</span>(y_test, y_pred)  </span>
+<span id="cb1-34"><a href="#cb1-34" tabindex="-1"></a>cm</span>
+<span id="cb1-35"><a href="#cb1-35" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" tabindex="-1"></a><span class="co">#Visualization of training set results</span></span>
+<span id="cb1-37"><a href="#cb1-37" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="#cb1-38" tabindex="-1"></a>from matplotlib.colors import ListedColormap  </span>
+<span id="cb1-39"><a href="#cb1-39" tabindex="-1"></a>x_set, y_set <span class="ot">=</span> x_train, y_train  </span>
+<span id="cb1-40"><a href="#cb1-40" tabindex="-1"></a>x1, x2 <span class="ot">=</span> <span class="fu">nm.meshgrid</span>(<span class="fu">nm.arange</span>(<span class="at">start =</span> x_set[<span class="sc">:</span>, <span class="dv">0</span>]<span class="fu">.min</span>() <span class="sc">-</span> <span class="dv">1</span>, <span class="at">stop =</span> x_set[<span class="sc">:</span>, <span class="dv">0</span>]<span class="fu">.max</span>() <span class="sc">+</span> <span class="dv">1</span>, <span class="at">step  =</span><span class="fl">0.01</span>),  </span>
+<span id="cb1-41"><a href="#cb1-41" tabindex="-1"></a><span class="fu">nm.arange</span>(<span class="at">start =</span> x_set[<span class="sc">:</span>, <span class="dv">1</span>]<span class="fu">.min</span>() <span class="sc">-</span> <span class="dv">1</span>, <span class="at">stop =</span> x_set[<span class="sc">:</span>, <span class="dv">1</span>]<span class="fu">.max</span>() <span class="sc">+</span> <span class="dv">1</span>, <span class="at">step =</span> <span class="fl">0.01</span>))  </span>
+<span id="cb1-42"><a href="#cb1-42" tabindex="-1"></a><span class="fu">mtp.contourf</span>(x1, x2, <span class="fu">classifier.predict</span>(<span class="fu">nm.array</span>([<span class="fu">x1.ravel</span>(), <span class="fu">x2.ravel</span>()]).T)<span class="fu">.reshape</span>(x1.shape),  </span>
+<span id="cb1-43"><a href="#cb1-43" tabindex="-1"></a><span class="at">alpha =</span> <span class="fl">0.75</span>, <span class="at">cmap =</span> <span class="fu">ListedColormap</span>((<span class="st">&#39;red&#39;</span>,<span class="st">&#39;green&#39;</span> )))  </span>
+<span id="cb1-44"><a href="#cb1-44" tabindex="-1"></a><span class="fu">mtp.xlim</span>(<span class="fu">x1.min</span>(), <span class="fu">x1.max</span>())  </span>
+<span id="cb1-45"><a href="#cb1-45" tabindex="-1"></a><span class="fu">mtp.ylim</span>(<span class="fu">x2.min</span>(), <span class="fu">x2.max</span>())  </span>
+<span id="cb1-46"><a href="#cb1-46" tabindex="-1"></a><span class="cf">for</span> i, j <span class="cf">in</span> <span class="fu">enumerate</span>(<span class="fu">nm.unique</span>(y_set))<span class="sc">:</span>  </span>
+<span id="cb1-47"><a href="#cb1-47" tabindex="-1"></a>    <span class="fu">mtp.scatter</span>(x_set[y_set <span class="sc">==</span> j, <span class="dv">0</span>], x_set[y_set <span class="sc">==</span> j, <span class="dv">1</span>],  </span>
+<span id="cb1-48"><a href="#cb1-48" tabindex="-1"></a>        <span class="at">c =</span> <span class="fu">ListedColormap</span>((<span class="st">&#39;red&#39;</span>, <span class="st">&#39;green&#39;</span>))(i), <span class="at">label =</span> j)  </span>
+<span id="cb1-49"><a href="#cb1-49" tabindex="-1"></a><span class="fu">mtp.title</span>(<span class="st">&#39;K-NN Algorithm (Training set)&#39;</span>)  </span>
+<span id="cb1-50"><a href="#cb1-50" tabindex="-1"></a><span class="fu">mtp.xlabel</span>(<span class="st">&#39;label1&#39;</span>)  </span>
+<span id="cb1-51"><a href="#cb1-51" tabindex="-1"></a><span class="fu">mtp.ylabel</span>(<span class="st">&#39;label2&#39;</span>)  </span>
+<span id="cb1-52"><a href="#cb1-52" tabindex="-1"></a><span class="fu">mtp.legend</span>()  </span>
+<span id="cb1-53"><a href="#cb1-53" tabindex="-1"></a><span class="fu">mtp.show</span>()  </span>
+<span id="cb1-54"><a href="#cb1-54" tabindex="-1"></a></span>
+<span id="cb1-55"><a href="#cb1-55" tabindex="-1"></a><span class="co">#Visualizing the test set result  </span></span>
+<span id="cb1-56"><a href="#cb1-56" tabindex="-1"></a>from matplotlib.colors import ListedColormap  </span>
+<span id="cb1-57"><a href="#cb1-57" tabindex="-1"></a>x_set, y_set <span class="ot">=</span> x_test, y_test  </span>
+<span id="cb1-58"><a href="#cb1-58" tabindex="-1"></a>x1, x2 <span class="ot">=</span> <span class="fu">nm.meshgrid</span>(<span class="fu">nm.arange</span>(<span class="at">start =</span> x_set[<span class="sc">:</span>, <span class="dv">0</span>]<span class="fu">.min</span>() <span class="sc">-</span> <span class="dv">1</span>, <span class="at">stop =</span> x_set[<span class="sc">:</span>, <span class="dv">0</span>]<span class="fu">.max</span>() <span class="sc">+</span> <span class="dv">1</span>, <span class="at">step  =</span><span class="fl">0.01</span>),  </span>
+<span id="cb1-59"><a href="#cb1-59" tabindex="-1"></a><span class="fu">nm.arange</span>(<span class="at">start =</span> x_set[<span class="sc">:</span>, <span class="dv">1</span>]<span class="fu">.min</span>() <span class="sc">-</span> <span class="dv">1</span>, <span class="at">stop =</span> x_set[<span class="sc">:</span>, <span class="dv">1</span>]<span class="fu">.max</span>() <span class="sc">+</span> <span class="dv">1</span>, <span class="at">step =</span> <span class="fl">0.01</span>))  </span>
+<span id="cb1-60"><a href="#cb1-60" tabindex="-1"></a><span class="fu">mtp.contourf</span>(x1, x2, <span class="fu">classifier.predict</span>(<span class="fu">nm.array</span>([<span class="fu">x1.ravel</span>(), <span class="fu">x2.ravel</span>()]).T)<span class="fu">.reshape</span>(x1.shape),  </span>
+<span id="cb1-61"><a href="#cb1-61" tabindex="-1"></a><span class="at">alpha =</span> <span class="fl">0.75</span>, <span class="at">cmap =</span> <span class="fu">ListedColormap</span>((<span class="st">&#39;red&#39;</span>,<span class="st">&#39;green&#39;</span> )))  </span>
+<span id="cb1-62"><a href="#cb1-62" tabindex="-1"></a><span class="fu">mtp.xlim</span>(<span class="fu">x1.min</span>(), <span class="fu">x1.max</span>())  </span>
+<span id="cb1-63"><a href="#cb1-63" tabindex="-1"></a><span class="fu">mtp.ylim</span>(<span class="fu">x2.min</span>(), <span class="fu">x2.max</span>())  </span>
+<span id="cb1-64"><a href="#cb1-64" tabindex="-1"></a><span class="cf">for</span> i, j <span class="cf">in</span> <span class="fu">enumerate</span>(<span class="fu">nm.unique</span>(y_set))<span class="sc">:</span>  </span>
+<span id="cb1-65"><a href="#cb1-65" tabindex="-1"></a>    <span class="fu">mtp.scatter</span>(x_set[y_set <span class="sc">==</span> j, <span class="dv">0</span>], x_set[y_set <span class="sc">==</span> j, <span class="dv">1</span>],  </span>
+<span id="cb1-66"><a href="#cb1-66" tabindex="-1"></a>        <span class="at">c =</span> <span class="fu">ListedColormap</span>((<span class="st">&#39;red&#39;</span>, <span class="st">&#39;green&#39;</span>))(i), <span class="at">label =</span> j)  </span>
+<span id="cb1-67"><a href="#cb1-67" tabindex="-1"></a><span class="fu">mtp.title</span>(<span class="st">&#39;K-NN algorithm(Test set)&#39;</span>)  </span>
+<span id="cb1-68"><a href="#cb1-68" tabindex="-1"></a><span class="fu">mtp.xlabel</span>(<span class="st">&#39;Label1&#39;</span>)  </span>
+<span id="cb1-69"><a href="#cb1-69" tabindex="-1"></a><span class="fu">mtp.ylabel</span>(<span class="st">&#39;Label2&#39;</span>)  </span>
+<span id="cb1-70"><a href="#cb1-70" tabindex="-1"></a><span class="fu">mtp.legend</span>()  </span>
+<span id="cb1-71"><a href="#cb1-71" tabindex="-1"></a><span class="fu">mtp.show</span>()</span></code></pre></div>
+<p><br />
+<br />
+</p>
+</div>
+<div id="r" class="section level2">
+<h2>R</h2>
+<p><br />
+<br />
+</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>mydata <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data.csv&quot;</span>, <span class="at">header=</span><span class="cn">TRUE</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="co"># Define which column has the labels, like region name, disease name, substance etc</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>labels <span class="ot">=</span> mydata<span class="sc">$</span>label_name</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>dmy <span class="ot">=</span> <span class="fu">dummyVars</span>(<span class="st">&quot;~.&quot;</span>,<span class="at">data=</span>mydata)</span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>mydata <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">predict</span>(dmy, mydata))</span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>mydata <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">bind_cols</span>(<span class="at">label_name=</span>labels, mydata))</span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="co"># Split your data set</span></span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>split <span class="ot">=</span> <span class="fu">createDataPartition</span>(mydata<span class="sc">$</span>label_name, <span class="at">p=</span><span class="fl">0.7</span>, <span class="at">list=</span><span class="cn">FALSE</span>)</span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a>train <span class="ot">=</span> mydata[split,]</span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a>test <span class="ot">=</span> mydata[<span class="sc">-</span>split,]</span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a><span class="co"># without caret:</span></span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a>{</span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a>  knnMod <span class="ot">=</span> <span class="fu">knn</span>(train[,<span class="sc">-</span><span class="dv">1</span>], test[,<span class="sc">-</span><span class="dv">1</span>], train[,<span class="dv">1</span>], <span class="at">k=</span>i)</span>
+<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a>  accuracy <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">sum</span>(knnMod<span class="sc">==</span>test[,<span class="dv">1</span>]) <span class="sc">/</span> <span class="fu">nrow</span>(test) <span class="sc">*</span> <span class="dv">100</span>,<span class="dv">3</span>)</span>
+<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">&quot;K = &quot;</span>, i, <span class="st">&quot;  Accuracy = &quot;</span>, accuracy))</span>
+<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a>}</span>
+<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a></span>
+<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a></span>
+<span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a>knnMod_final <span class="ot">=</span> <span class="fu">knn</span>(train[,<span class="sc">-</span><span class="dv">1</span>], test[,<span class="sc">-</span><span class="dv">1</span>], train[,<span class="dv">1</span>], <span class="at">k=</span><span class="dv">4</span>)</span>
+<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a><span class="fu">confusionMatrix</span>(knnMod_final, test[,<span class="dv">1</span>])</span>
+<span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a></span>
+<span id="cb2-31"><a href="#cb2-31" tabindex="-1"></a></span>
+<span id="cb2-32"><a href="#cb2-32" tabindex="-1"></a><span class="co"># -------------------------------</span></span>
+<span id="cb2-33"><a href="#cb2-33" tabindex="-1"></a></span>
+<span id="cb2-34"><a href="#cb2-34" tabindex="-1"></a><span class="co"># with caret</span></span>
+<span id="cb2-35"><a href="#cb2-35" tabindex="-1"></a></span>
+<span id="cb2-36"><a href="#cb2-36" tabindex="-1"></a></span>
+<span id="cb2-37"><a href="#cb2-37" tabindex="-1"></a><span class="fu">library</span>(caret)</span>
+<span id="cb2-38"><a href="#cb2-38" tabindex="-1"></a><span class="fu">library</span>(class)</span>
+<span id="cb2-39"><a href="#cb2-39" tabindex="-1"></a></span>
+<span id="cb2-40"><a href="#cb2-40" tabindex="-1"></a>fitControl <span class="ot">=</span> <span class="fu">trainControl</span>(<span class="at">method=</span><span class="st">&quot;repeatedcv&quot;</span>, <span class="at">repeats=</span><span class="dv">3</span>)</span>
+<span id="cb2-41"><a href="#cb2-41" tabindex="-1"></a></span>
+<span id="cb2-42"><a href="#cb2-42" tabindex="-1"></a><span class="co">#  for KNN the data should be scaled and centered. Without it, the accuracy is significantly lower</span></span>
+<span id="cb2-43"><a href="#cb2-43" tabindex="-1"></a></span>
+<span id="cb2-44"><a href="#cb2-44" tabindex="-1"></a>knnMod2 <span class="ot">=</span> <span class="fu">train</span>(label_name <span class="sc">~</span> ., <span class="at">data=</span>train, </span>
+<span id="cb2-45"><a href="#cb2-45" tabindex="-1"></a>                <span class="at">method=</span><span class="st">&quot;knn&quot;</span>,</span>
+<span id="cb2-46"><a href="#cb2-46" tabindex="-1"></a>                <span class="at">trControl=</span>fitControl,</span>
+<span id="cb2-47"><a href="#cb2-47" tabindex="-1"></a>                <span class="at">preProcess=</span><span class="fu">c</span>(<span class="st">&quot;center&quot;</span>,<span class="st">&quot;scale&quot;</span>),</span>
+<span id="cb2-48"><a href="#cb2-48" tabindex="-1"></a>                <span class="at">tuneLength=</span><span class="dv">10</span>)</span>
+<span id="cb2-49"><a href="#cb2-49" tabindex="-1"></a></span>
+<span id="cb2-50"><a href="#cb2-50" tabindex="-1"></a><span class="fu">plot</span>(knnMod2)</span>
+<span id="cb2-51"><a href="#cb2-51" tabindex="-1"></a></span>
+<span id="cb2-52"><a href="#cb2-52" tabindex="-1"></a>pred <span class="ot">=</span> <span class="fu">predict</span>(knnMod2, <span class="at">newdata=</span>test)</span>
+<span id="cb2-53"><a href="#cb2-53" tabindex="-1"></a><span class="fu">confusionMatrix</span>(pred, test[,<span class="dv">1</span>])</span>
+<span id="cb2-54"><a href="#cb2-54" tabindex="-1"></a></span>
+<span id="cb2-55"><a href="#cb2-55" tabindex="-1"></a></span>
+<span id="cb2-56"><a href="#cb2-56" tabindex="-1"></a><span class="co"># + Visualization with ggplot2</span></span>
+<span id="cb2-57"><a href="#cb2-57" tabindex="-1"></a><span class="co"># Try it out yourself, I know you know how from our last course! ;)</span></span></code></pre></div>
+<p><br />
+<br />
+</p>
+</div>
+<div id="github-examples" class="section level2">
+<h2>GitHub examples:</h2>
+<p><br />
+<br />
+</p>
+<div id="r-1" class="section level3">
+<h3>R:</h3>
+<p><br />
+</p>
+<p><a
+href="https://github.com/sangel217/basic-knn-prediction-in-R/tree/main">1</a></p>
+<p><a
+href="https://github.com/esdonmez/Predict-ASD-with-KNN-SVM">2</a></p>
+<p><a href="https://github.com/venkb/Titanic-KNN/tree/master">3 -
+Titanic</a></p>
+<p><a
+href="https://github.com/niki864/Simple-Stock-Predictor-xgboost-knn-">4
+- Stock Predictor</a></p>
+<p><a
+href="https://github.com/RubenSanchezF/Prediction-of-E.-Coli-promoter-gene-sequences">5
+- Genes Analysis</a></p>
+<p><a href="https://github.com/juggernauthk108/iris-knn">6 -
+Iris</a></p>
+<p><a
+href="https://github.com/BHebbar/Predictive-Model-Building-">7</a></p>
+<p><a href="https://github.com/vakadanaveen/CancerPrediction">8 -
+Cancer</a></p>
+<p><a href="https://github.com/yuexiatian/R_project">9</a></p>
+<p><a href="https://github.com/shubhi1296/Breast-Cancer-Prediction">10 -
+Breast Cancer</a></p>
+<p><a
+href="https://github.com/Shakib1126/Effective-diagnosis-of-Breast-Cancer-using-KNN-Algorithm">11
+- Breast Cancer 2</a></p>
+<p><a
+href="https://github.com/vardaantyagi/Prediction-of-Opioid-Addiction-by-Early-Prediction-of-Substance-Addiction">12
+- Opioid Addiction</a></p>
+<p><a
+href="https://github.com/iscarff123/CardiovascularDiseasePrediction">13
+- Cardiovascular Diseases</a></p>
+<p><br />
+<br />
+</p>
+</div>
+<div id="python-1" class="section level3">
+<h3>Python:</h3>
+<p><br />
+</p>
+<p><a
+href="https://github.com/archit-47/Predicting-Chronic-Kidney-Diseases">1
+- Kidney Disease Predictor</a></p>
+<p><a
+href="https://github.com/MahekDwivedi/heart-failure-prediction-system">2
+- Heart Failure Predictor</a></p>
+<p><a href="https://github.com/anilahsu/TitanicSurvivalPrediction">3 -
+Titanic</a></p>
+<p><a
+href="https://github.com/MarcusGitAccount/KNN-heart-disease-classifier">4
+- Heart Disease</a></p>
+<p><a href="https://github.com/Hariharan-V/KNN-MLE-diabetes-predictor">5
+- Diabetes</a></p>
+<p><a href="https://github.com/michalbaldyga/iris-flowers-knn">6 -
+Iris</a></p>
+<p><a href="https://github.com/michalbaldyga/prostate-cancer-knn">7 -
+Prostate Cancer</a></p>
+<p><a
+href="https://github.com/BaruaSourav/DNA-Transcription-Factor-Prediction">8
+- DNA TF Predictor</a></p>
+<p><a href="https://github.com/Suji04/Blood-Donation-Predictor">9 -
+Blood Donation Predictor</a></p>
+<p><a href="https://github.com/p0werserg/BreastCancerClassification">10
+- Breast Cancer</a></p>
+<p><a
+href="https://github.com/Small-Samori/Breast-Cancer-Diagnosis-Using-KNN">11
+- Breast Cancer</a></p>
+<p><a href="https://github.com/SerkanKilci/diabetes-prediction">12 -
+Diabetes</a></p>
+<p><a
+href="https://github.com/NickMezacapa/Heart-Disease-Prediction-using-KNN">13
+- Heart Disease</a><br />
+<br />
+</p>
+<hr />
+<p><br />
+<br />
+</p>
+</div>
+</div>
+</div>
+<div id="exercises" class="section level1">
+<h1><em><span
+style="text-decoration:underline">Exercises</span></em></h1>
+<p><br />
+<br />
+</p>
+<div id="exercise-1" class="section level2">
+<h2>Exercise 1</h2>
+<p><br />
+</p>
+<p>Use both of the above Python and R codes in order to analyze a data
+set of your choosing or the one on <a
+href="https://www.kaggle.com/c/fake-news/data?select=train.csv">fake
+news</a>.<br />
+</p>
+<p>While working with R, do the analysis both with and without caret and
+compare the results in order to check whether you can justify using
+caret.</p>
+<p><br />
+<br />
+</p>
+</div>
+<div id="exercise-2" class="section level2">
+<h2>Exercise 2</h2>
+<p><br />
+<br />
+</p>
+<p>Out of mentioned GitHub repositories, <strong>pick 1 for Python and 1
+for R and run them yourself</strong>. Dig into the data, understand why
+the code gives you certain results and <strong>run the model on a new
+data set which you either find in the internet or create
+yourself</strong> (for example you can prepare a data set with values
+you believe would be interesting) - the new data set should be at least
+15 rows long.<br />
+</p>
+<p>In the end, create a short documentation presenting the result with
+at least 1 graph (either in a Word document or Rmarkdown).</p>
+<p><br />
+<br />
+</p>
+<p>Send the Exercise 1 and 2 to my email: <strong><a
+href="mailto:klaudia.chmielewska@ug.edu.pl"
+class="email">klaudia.chmielewska@ug.edu.pl</a></strong> with the Title
+format: “DCH2_Name_Class2” (DCH = Digital Chemistry).</p>
+<p><br />
+<br />
+<br />
+</p>
+<hr />
+<p><br />
+<br />
+</p>
+<hr />
+<p><br />
+<br />
+Klaudia Chmielewska</p>
+<p><em><a href="mailto:klaudia.chmielewska@ug.edu.pl"
+class="email">klaudia.chmielewska@ug.edu.pl</a></em></p>
+<p><br />
+<br />
+</p>
+<p>See you in the next lesson!</p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
