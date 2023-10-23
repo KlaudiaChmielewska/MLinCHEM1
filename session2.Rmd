@@ -1,0 +1,395 @@
+---
+title: "__ML in chem__"
+subtitle: "*Lesson 2*"
+author: "__*Klaudia Chmielewska*__"
+output:    
+  html_document:
+    theme: darkly
+    df_print: paged
+    highlight: tango #code highlighter
+    toc: true # generates a table of contents (based on # and ## lines)
+    number_sections: false # table of contents numbers
+    toc_float: yes # floating table of contents
+    css: style.css 
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+\
+
+
+# *<span style="text-decoration:underline">How do they think?</span>*
+\
+
+One way to differentiate between machine learning algorithms is by how they **generalize**, which means how models are able to create assumptions on data  previously not seen (new data points, not the points it was trained on).
+\
+
+Two main approaches are:
+\
+
+- instance-based learning (memory-based learning) [nonparametric: Decision Trees, k-NN]
+-- compare new data points with those seen in training
+- model-based training [parametric: linear regression]
+-- create a system with a predictive model which analyzes whether the predicted value would change dependent on other variables
+\
+\
+
+
+
+# *<span style="text-decoration:underline">kNN</span>*
+\
+
+## Basics
+\
+
+k-NearestNeighbours is considered to be the simplest method of supervised learning - and thus became one of the most commonly used. k-NN represents a non-parametric method, hence uses instance-based learning technique to analyze data. Although generally fit for both classification and regression tasks, it is usually used for the former, where it assumes that similar points can be found near one another.
+\
+
+Generally, k-NN works believing data points can be attributed to classes with the highest number of common points/traits. This means if we tried to build an algorithm able to guess a price of cancer drugs, k-NN would group the dataset based on different aspects, like demand, synthesis route, type of chemicals used, transport fees and country of origin, making several assumptions on the correlation between points. Such groups will now be classes, which will have similar computed values.  
+\
+
+This means k-NN could potentially be used on a dataset of SMILES, which we'd want to attribute to different classes like "carboxylic acids" or "basic salts" etc. The algorithm would first look at a new SMILES, then look at the textbook it has, with the training data it acquired from us - and find whether a given substance has a -COOH group in order to put it in the "carboxylic acids" class.
+\
+
+Hence, k-NN algorithm identifies the nearest neighbors, the most similar points. To do that, we first need to define a maximum amount of nearest neighbors inside a the class, as well as calculate the distance between a newly presented data point and the rest of the data.
+
+\
+
+We can choose from:
+\
+
+- Euclidean distance [real-valued vectors, measures a straight line between points]
+- Manhattan distance 
+- Minkowski distance
+- Hamming distance
+\
+\
+
+## Advantages
+
+\
+
+k-NN is useful in data preprocessing, where it is able to estimate probable value of missing data values in the set [missing data imputation]. It can also group our cookies in order to provide automatic recommendations, can identify handwriting - as well as create predictions on most likely occuring gene expression profiles, progressing risk of cancer or any other disease etc.
+\
+
+Its biggest advantage is its simplicity, easy adaptation and requires a scarce amount of parameters (k value and a distance metric).
+\
+
+## Disadvantages
+\
+
+Given that k-NN is memory-based, it unfortunately lacks the ability to scale well, which means it works slowly, takes up a lot of memory and data storage and can ask for our patience. It also doesn't work well with huge sets of data and is prone to overfitting. Additionally, it's results rely very much on our  chosen value of k. If we choose a value too low, we might find ourselves with a model overfitting the data, while a k too high can result in the underfitting, smoothing out the prediction values, generalizing them more. 
+
+
+\
+
+## k-NN steps
+
+\
+
+1. Select **k** of neighbors.
+2. Calculate distance of **k** number of neighbors.
+3. Find nearest neighbours to that distance.
+4. Count the number of data points in each category.
+5. Assign new data points to the category with the highest number of neighbors present.
+
+\
+\
+
+***
+\
+\
+
+
+# *<span style="text-decoration:underline">Coding</span>*
+\
+\
+
+## Python
+
+\
+
+
+``` {r python, eval=FALSE}
+# importing libraries  
+import numpy as nm  
+import matplotlib.pyplot as mtp  
+import pandas as pd  
+  
+#importing datasets
+
+data_set= pd.read_csv('User_Data.csv')  
+  
+#Extracting Independent and dependent Variable  
+x= data_set.iloc[:, [2,3]].values  
+y= data_set.iloc[:, 4].values  
+  
+# Splitting the dataset into training and test set.  
+from sklearn.model_selection import train_test_split  
+x_train, x_test, y_train, y_test= train_test_split(x, y, test_size= 0.25, random_state=0)  
+  
+#feature Scaling  
+from sklearn.preprocessing import StandardScaler    
+st_x= StandardScaler()    
+x_train= st_x.fit_transform(x_train)    
+x_test= st_x.transform(x_test) 
+
+#Fitting K-NN classifier to the training set  
+from sklearn.neighbors import KNeighborsClassifier  
+classifier= KNeighborsClassifier(n_neighbors=5, metric='minkowski', p=2 )  
+classifier.fit(x_train, y_train)  
+
+#Predicting the test set result  
+y_pred= classifier.predict(x_test)  
+
+from sklearn.metrics import confusion_matrix  
+cm= confusion_matrix(y_test, y_pred)  
+cm
+
+#Visualization of training set results
+
+from matplotlib.colors import ListedColormap  
+x_set, y_set = x_train, y_train  
+x1, x2 = nm.meshgrid(nm.arange(start = x_set[:, 0].min() - 1, stop = x_set[:, 0].max() + 1, step  =0.01),  
+nm.arange(start = x_set[:, 1].min() - 1, stop = x_set[:, 1].max() + 1, step = 0.01))  
+mtp.contourf(x1, x2, classifier.predict(nm.array([x1.ravel(), x2.ravel()]).T).reshape(x1.shape),  
+alpha = 0.75, cmap = ListedColormap(('red','green' )))  
+mtp.xlim(x1.min(), x1.max())  
+mtp.ylim(x2.min(), x2.max())  
+for i, j in enumerate(nm.unique(y_set)):  
+    mtp.scatter(x_set[y_set == j, 0], x_set[y_set == j, 1],  
+        c = ListedColormap(('red', 'green'))(i), label = j)  
+mtp.title('K-NN Algorithm (Training set)')  
+mtp.xlabel('label1')  
+mtp.ylabel('label2')  
+mtp.legend()  
+mtp.show()  
+
+#Visualizing the test set result  
+from matplotlib.colors import ListedColormap  
+x_set, y_set = x_test, y_test  
+x1, x2 = nm.meshgrid(nm.arange(start = x_set[:, 0].min() - 1, stop = x_set[:, 0].max() + 1, step  =0.01),  
+nm.arange(start = x_set[:, 1].min() - 1, stop = x_set[:, 1].max() + 1, step = 0.01))  
+mtp.contourf(x1, x2, classifier.predict(nm.array([x1.ravel(), x2.ravel()]).T).reshape(x1.shape),  
+alpha = 0.75, cmap = ListedColormap(('red','green' )))  
+mtp.xlim(x1.min(), x1.max())  
+mtp.ylim(x2.min(), x2.max())  
+for i, j in enumerate(nm.unique(y_set)):  
+    mtp.scatter(x_set[y_set == j, 0], x_set[y_set == j, 1],  
+        c = ListedColormap(('red', 'green'))(i), label = j)  
+mtp.title('K-NN algorithm(Test set)')  
+mtp.xlabel('Label1')  
+mtp.ylabel('Label2')  
+mtp.legend()  
+mtp.show()
+
+```
+
+\
+\
+
+
+## R
+\
+\
+
+``` {r Rcode, eval=FALSE}
+
+
+mydata <- read.csv("data.csv", header=TRUE)
+
+# Define which column has the labels, like region name, disease name, substance etc
+
+labels = mydata$label_name
+
+
+dmy = dummyVars("~.",data=mydata)
+mydata = data.frame(predict(dmy, mydata))
+mydata = data.frame(bind_cols(label_name=labels, mydata))
+
+# Split your data set
+split = createDataPartition(mydata$label_name, p=0.7, list=FALSE)
+train = mydata[split,]
+test = mydata[-split,]
+
+
+# without caret:
+
+for (i in 1:10)
+{
+  knnMod = knn(train[,-1], test[,-1], train[,1], k=i)
+  accuracy = round(sum(knnMod==test[,1]) / nrow(test) * 100,3)
+  print(paste0("K = ", i, "  Accuracy = ", accuracy))
+}
+
+
+knnMod_final = knn(train[,-1], test[,-1], train[,1], k=4)
+confusionMatrix(knnMod_final, test[,1])
+
+
+# -------------------------------
+
+# with caret
+
+
+library(caret)
+library(class)
+
+fitControl = trainControl(method="repeatedcv", repeats=3)
+
+#  for KNN the data should be scaled and centered. Without it, the accuracy is significantly lower
+
+knnMod2 = train(label_name ~ ., data=train, 
+                method="knn",
+                trControl=fitControl,
+                preProcess=c("center","scale"),
+                tuneLength=10)
+
+plot(knnMod2)
+
+pred = predict(knnMod2, newdata=test)
+confusionMatrix(pred, test[,1])
+
+
+# + Visualization with ggplot2
+# Try it out yourself, I know you know how from our last course! ;)
+
+
+```
+
+
+
+\
+\
+
+
+## GitHub examples:
+\
+\
+
+### R:
+\
+
+
+[1](https://github.com/sangel217/basic-knn-prediction-in-R/tree/main)
+
+[2](https://github.com/esdonmez/Predict-ASD-with-KNN-SVM)
+
+[3 - Titanic](https://github.com/venkb/Titanic-KNN/tree/master)
+
+[4 - Stock Predictor](https://github.com/niki864/Simple-Stock-Predictor-xgboost-knn-)
+
+[5 - Genes Analysis](https://github.com/RubenSanchezF/Prediction-of-E.-Coli-promoter-gene-sequences)
+
+[6 - Iris](https://github.com/juggernauthk108/iris-knn)
+
+[7](https://github.com/BHebbar/Predictive-Model-Building-)
+
+[8 - Cancer](https://github.com/vakadanaveen/CancerPrediction)
+
+[9](https://github.com/yuexiatian/R_project)
+
+[10 - Breast Cancer](https://github.com/shubhi1296/Breast-Cancer-Prediction)
+
+[11 - Breast Cancer 2](https://github.com/Shakib1126/Effective-diagnosis-of-Breast-Cancer-using-KNN-Algorithm)
+
+[12 - Opioid Addiction](https://github.com/vardaantyagi/Prediction-of-Opioid-Addiction-by-Early-Prediction-of-Substance-Addiction)
+
+[13 - Cardiovascular Diseases](https://github.com/iscarff123/CardiovascularDiseasePrediction)
+
+\
+\
+
+### Python:
+\
+
+[1 - Kidney Disease Predictor](https://github.com/archit-47/Predicting-Chronic-Kidney-Diseases)
+
+[2 - Heart Failure Predictor](https://github.com/MahekDwivedi/heart-failure-prediction-system)
+
+[3 - Titanic](https://github.com/anilahsu/TitanicSurvivalPrediction)
+
+[4 - Heart Disease](https://github.com/MarcusGitAccount/KNN-heart-disease-classifier)
+
+[5 - Diabetes](https://github.com/Hariharan-V/KNN-MLE-diabetes-predictor)
+
+[6 - Iris](https://github.com/michalbaldyga/iris-flowers-knn)
+
+[7 - Prostate Cancer](https://github.com/michalbaldyga/prostate-cancer-knn)
+
+[8 - DNA TF Predictor](https://github.com/BaruaSourav/DNA-Transcription-Factor-Prediction)
+
+[9 - Blood Donation Predictor](https://github.com/Suji04/Blood-Donation-Predictor)
+
+[10 - Breast Cancer](https://github.com/p0werserg/BreastCancerClassification)
+
+[11 - Breast Cancer](https://github.com/Small-Samori/Breast-Cancer-Diagnosis-Using-KNN)
+
+[12 - Diabetes](https://github.com/SerkanKilci/diabetes-prediction)
+
+[13 - Heart Disease](https://github.com/NickMezacapa/Heart-Disease-Prediction-using-KNN)
+\
+\
+
+
+***
+\
+\
+
+# *<span style="text-decoration:underline">Exercises</span>*
+
+\
+\
+
+## Exercise 1
+\
+
+Use both of the above Python and R codes in order to analyze a data set of your choosing or the one on [fake news](https://www.kaggle.com/c/fake-news/data?select=train.csv). 
+\
+
+While working with R, do the analysis both with and without caret and compare the results in order to check whether you can justify using caret.
+
+\
+\
+
+
+## Exercise 2
+\
+\
+
+Out of mentioned GitHub repositories, **pick 1 for Python and 1 for R and run them yourself**. Dig into the data, understand why the code gives you certain results and **run the model on a new data set which you either find in the internet or create yourself** (for example you can prepare a data set with values you believe would be interesting) - the new data set should be at least 15 rows long.
+\
+
+In the end, create a short documentation presenting the result with at least 1 graph (either in a Word document or Rmarkdown). 
+
+\
+\
+
+
+Send the Exercise 1 and 2 to my email: __klaudia.chmielewska@ug.edu.pl__ with the Title format: "DCH2_Name_Class2" (DCH = Digital Chemistry).
+
+\
+\
+\
+
+***
+\
+\
+
+***
+
+
+\
+\
+Klaudia Chmielewska
+
+_klaudia.chmielewska@ug.edu.pl_
+
+
+\
+\
+
+See you in the next lesson!
