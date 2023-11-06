@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Klaudia Chmielewska" />
+
+
+<title>ML in chem</title>
+
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/darkly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #204a87; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #204a87; font-weight: bold; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Machine Learning in Chemistry</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Main</a>
+</li>
+<li>
+  <a href="session1.html">Lesson 1</a>
+</li>
+<li>
+  <a href="session2.html">Lesson 2</a>
+</li>
+<li>
+  <a href="lesson_three.html">Lesson 3</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore"><strong>ML in chem</strong></h1>
+<h3 class="subtitle"><em>Lesson 3</em></h3>
+<h4 class="author"><strong><em>Klaudia Chmielewska</em></strong></h4>
+
+</div>
+
+
+<p><br />
+</p>
+<div id="python-vs-r" class="section level1">
+<h1><em><span style="text-decoration:underline">Python vs
+R</span></em></h1>
+<p><br />
+</p>
+<div id="which-one-is-better" class="section level2">
+<h2>Which one is better?</h2>
+<p><br />
+</p>
+<p>People tend to be ‘practical’ when it comes to saving time. Whether
+it’s ordering online so that you don’t have to go anywhere, or reading a
+book summary instead of diving into the book - we feel satisfied,
+efficient and proud, further spending saved time on our hobbies or other
+things that bring us joy.<br />
+</p>
+<p>Same goes for learning. Even those psyched over a subject can still
+feel the urge to take a shortcut. In Poland we sometimes say that
+laziness is the driving force of mankind. Perhaps if humans were not
+lazy, we wouldn’t feel a push towards change.<br />
+</p>
+<p>Having that in mind, you probably figured out that the answer to the
+question of this section will be - <em>it depends</em>. In the same way
+that a 3in1 shampoo won’t be the best choice for our hair in the long
+run, <em>Python cannot be a all-in-one programming language</em>.</p>
+<p><br />
+</p>
+<p>We’ll go over the possibilities of each language and discuss useful
+packages.</p>
+<p>Interestingly, you can also do machine learning in other languages,
+like C/C++ or Java. Actually, languages like Lua, Lisp and Haskell offer
+quite a similar set of possibilities as Python and R, however never went
+into fashion. Other possibility is Julia, a Jupyter notebook option,
+which works with the speed of C, on the basis of Python/R scripts.<br />
+</p>
+<p>In the end, it all goes down to preference, although many indicate
+that R was created with having statistics in mind, hence seems to be
+more versatile and fit for the job. However, Python packages for
+statistics and machine learning are being developed each year.<br />
+<br />
+</p>
+</div>
+<div id="why-r" class="section level2">
+<h2>Why R?</h2>
+<p><br />
+</p>
+<ul>
+<li>preferred by most of the academic community</li>
+<li>designed for statistical analysis</li>
+<li>considered best for statistics and data visualization</li>
+<li>over 7 thousand packages for data analysis and statistical modeling
+research (which lets less users with less programming experience perform
+powerful calculations)</li>
+<li><em>rmarkdown</em> and <em>Shiny</em> for creating reports (easily
+and quickly obtainable reports, R supports LaTeX, hence offers a
+possibility of creating interactive graphs)</li>
+<li>given that Python libraries are usually inspired by R packages, it
+is more comfortable using R sometimes</li>
+<li>interestingly, most econometricians only work with R as it
+exclusively has the package necessary</li>
+<li>if you encounter a problem along the way, it’s easier to find a
+solution for R code rather than Python, as more data scientists preffer
+R in general (it is also connected to the fact that R offers more
+possibilities in specific cases and has an established group of users,
+able to answer questions on public forum etc.)</li>
+<li>computationally slower language compared to Python, especially if
+the code is written poorly</li>
+</ul>
+<p><br />
+<br />
+</p>
+</div>
+<div id="why-python" class="section level2">
+<h2>Why Python?</h2>
+<p><br />
+</p>
+<ul>
+<li>more popular in the industry</li>
+<li>some state it is better with larger data sets (while others say
+otherwise…)</li>
+<li>more versatile than R (besides statistics and reports making, it’s
+also good for web and app development, database connectivity; some also
+claim it is better for machine learning)</li>
+<li>results are not as detailed and eye-catching as the ones from R</li>
+<li>it seems learning and using Python ends up in finding more job
+opportunities</li>
+<li>a little harder to learn than R</li>
+</ul>
+<p><br />
+<br />
+</p>
+<hr />
+<p><br />
+<br />
+</p>
+</div>
+<div id="useful-python-libraries" class="section level2">
+<h2>Useful Python libraries</h2>
+<p><br />
+<br />
+</p>
+<div id="data-wrangling" class="section level3">
+<h3>Data wrangling</h3>
+<p><br />
+</p>
+<ul>
+<li>NumPy</li>
+<li>SciPy</li>
+<li>Pandas</li>
+</ul>
+<p><br />
+</p>
+</div>
+<div id="visualization" class="section level3">
+<h3>Visualization</h3>
+<p><br />
+</p>
+<ul>
+<li>Matplotlib [quite low-lvl - requires you to write more code than
+R]</li>
+<li>Seaborn [for heat maps, dependent on Matplotlib]</li>
+<li>Bokeh [interactive graphs, independent of matplotlib]</li>
+<li>Plotly [web-based graphical toolkit]</li>
+</ul>
+<p><br />
+</p>
+</div>
+<div id="machine-learning" class="section level3">
+<h3>Machine Learning</h3>
+<p><br />
+</p>
+<ul>
+<li>SciKit-Learn</li>
+<li>Keras</li>
+<li>TensorFlow</li>
+<li>Theano</li>
+</ul>
+</div>
+<div id="other" class="section level3">
+<h3>Other</h3>
+<ul>
+<li>Scrapy</li>
+<li>NLTK</li>
+<li>Gensim</li>
+<li>Statsmodels</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="mlr---coding" class="section level1">
+<h1><em><span style="text-decoration:underline">MLR -
+Coding</span></em></h1>
+<p><br />
+<br />
+</p>
+<div id="python" class="section level2">
+<h2>Python</h2>
+<p><br />
+</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># Importing the libraries</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>import numpy as np</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>import matplotlib.pyplot as plt</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>import pandas as pd</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="co"># Importing the dataset</span></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>dataset <span class="ot">=</span> <span class="fu">pd.read_csv</span>(<span class="st">&#39;your_data_set.csv&#39;</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="co"># Access specific rows and columns (change the numbers)</span></span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>X <span class="ot">=</span> dataset.iloc[<span class="sc">:</span>, <span class="sc">:-</span><span class="dv">1</span>].values</span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>y <span class="ot">=</span> dataset.iloc[<span class="sc">:</span>, <span class="dv">4</span>].values</span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a><span class="co"># Encoding the Independent Variable</span></span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>from sklearn.preprocessing import LabelEncoder, OneHotEncoder</span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a>labelencoder_X <span class="ot">=</span> <span class="fu">LabelEncoder</span>()</span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>X[<span class="sc">:</span>, <span class="dv">3</span>] <span class="ot">=</span> <span class="fu">labelencoder_X.fit_transform</span>(X[<span class="sc">:</span>, <span class="dv">3</span>])</span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a>onehotencoder <span class="ot">=</span> <span class="fu">OneHotEncoder</span>()</span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a>a <span class="ot">=</span> <span class="fu">onehotencoder.fit_transform</span>(X[<span class="sc">:</span>,[<span class="dv">3</span>]])<span class="fu">.toarray</span>()</span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a><span class="co"># Avoid the dummy variable Trap</span></span>
+<span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a>a<span class="ot">=</span>a[<span class="sc">:</span>,<span class="dv">1</span><span class="sc">:</span>]</span>
+<span id="cb1-23"><a href="#cb1-23" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" tabindex="-1"></a><span class="co"># Add encoded data into X</span></span>
+<span id="cb1-25"><a href="#cb1-25" tabindex="-1"></a>X <span class="ot">=</span> X[<span class="sc">:</span>,<span class="sc">:</span><span class="dv">3</span>]</span>
+<span id="cb1-26"><a href="#cb1-26" tabindex="-1"></a>X<span class="ot">=</span><span class="fu">np.concatenate</span>((X, a),<span class="at">axis=</span><span class="dv">1</span>)</span>
+<span id="cb1-27"><a href="#cb1-27" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" tabindex="-1"></a><span class="co"># Split the dataset into the Training set and Test set</span></span>
+<span id="cb1-29"><a href="#cb1-29" tabindex="-1"></a>from sklearn.model_selection import train_test_split</span>
+<span id="cb1-30"><a href="#cb1-30" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="ot">=</span> <span class="fu">train_test_split</span>(X, y, <span class="at">test_size =</span> <span class="fl">0.2</span>, <span class="at">random_state =</span> <span class="dv">0</span>)</span>
+<span id="cb1-31"><a href="#cb1-31" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" tabindex="-1"></a><span class="co"># Feature Scaling</span></span>
+<span id="cb1-33"><a href="#cb1-33" tabindex="-1"></a><span class="st">&quot;&quot;&quot;from sklearn.preprocessing import StandardScaler</span></span>
+<span id="cb1-34"><a href="#cb1-34" tabindex="-1"></a><span class="st">sc_X = StandardScaler()</span></span>
+<span id="cb1-35"><a href="#cb1-35" tabindex="-1"></a><span class="st">X_train = sc_X.fit_transform(X_train)</span></span>
+<span id="cb1-36"><a href="#cb1-36" tabindex="-1"></a><span class="st">X_test = sc_X.transform(X_test)</span></span>
+<span id="cb1-37"><a href="#cb1-37" tabindex="-1"></a><span class="st">sc_y = StandardScaler()</span></span>
+<span id="cb1-38"><a href="#cb1-38" tabindex="-1"></a><span class="st">y_train = sc_y.fit_transform(y_train)&quot;&quot;&quot;</span></span>
+<span id="cb1-39"><a href="#cb1-39" tabindex="-1"></a></span>
+<span id="cb1-40"><a href="#cb1-40" tabindex="-1"></a><span class="co"># Linear Model</span></span>
+<span id="cb1-41"><a href="#cb1-41" tabindex="-1"></a>from sklearn.linear_model import LinearRegression</span>
+<span id="cb1-42"><a href="#cb1-42" tabindex="-1"></a>regressor<span class="ot">=</span><span class="fu">LinearRegression</span>()</span>
+<span id="cb1-43"><a href="#cb1-43" tabindex="-1"></a><span class="fu">regressor.fit</span>(X_train,y_train)</span>
+<span id="cb1-44"><a href="#cb1-44" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" tabindex="-1"></a>y_pred<span class="ot">=</span><span class="fu">regressor.predict</span>(X_test)</span>
+<span id="cb1-46"><a href="#cb1-46" tabindex="-1"></a></span>
+<span id="cb1-47"><a href="#cb1-47" tabindex="-1"></a><span class="co"># add column of 1&#39;s in X</span></span>
+<span id="cb1-48"><a href="#cb1-48" tabindex="-1"></a>import statsmodels.formula.api as sm</span>
+<span id="cb1-49"><a href="#cb1-49" tabindex="-1"></a>X<span class="ot">=</span><span class="fu">np.append</span>(<span class="at">arr=</span><span class="fu">np.ones</span>((<span class="dv">50</span>,<span class="dv">1</span>))<span class="fu">.astype</span>(int),<span class="at">values=</span>X,<span class="at">axis=</span><span class="dv">1</span>)</span>
+<span id="cb1-50"><a href="#cb1-50" tabindex="-1"></a></span>
+<span id="cb1-51"><a href="#cb1-51" tabindex="-1"></a>import statsmodels.api as sm1</span>
+<span id="cb1-52"><a href="#cb1-52" tabindex="-1"></a></span>
+<span id="cb1-53"><a href="#cb1-53" tabindex="-1"></a><span class="co">#backward Elimination</span></span>
+<span id="cb1-54"><a href="#cb1-54" tabindex="-1"></a>X_opt<span class="ot">=</span><span class="fu">np.array</span>(X[<span class="sc">:</span>,[<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]],<span class="at">dtype =</span> float)</span>
+<span id="cb1-55"><a href="#cb1-55" tabindex="-1"></a>regressor_OLS<span class="ot">=</span><span class="fu">sm1.OLS</span>(<span class="at">endog=</span>y,<span class="at">exog=</span>X_opt)<span class="fu">.fit</span>()</span>
+<span id="cb1-56"><a href="#cb1-56" tabindex="-1"></a><span class="fu">regressor_OLS.summary</span>()</span>
+<span id="cb1-57"><a href="#cb1-57" tabindex="-1"></a></span>
+<span id="cb1-58"><a href="#cb1-58" tabindex="-1"></a><span class="co">#forward selection</span></span>
+<span id="cb1-59"><a href="#cb1-59" tabindex="-1"></a>X_opt2<span class="ot">=</span><span class="fu">np.array</span>(X[<span class="sc">:</span>,[<span class="dv">0</span>]],<span class="at">dtype =</span> float)</span>
+<span id="cb1-60"><a href="#cb1-60" tabindex="-1"></a>regressor_OLS2<span class="ot">=</span><span class="fu">sm1.OLS</span>(<span class="at">endog=</span>y,<span class="at">exog=</span>X_opt2)<span class="fu">.fit</span>()</span>
+<span id="cb1-61"><a href="#cb1-61" tabindex="-1"></a><span class="fu">regressor_OLS2.summary</span>()</span>
+<span id="cb1-62"><a href="#cb1-62" tabindex="-1"></a></span>
+<span id="cb1-63"><a href="#cb1-63" tabindex="-1"></a></span>
+<span id="cb1-64"><a href="#cb1-64" tabindex="-1"></a><span class="co">#Visualizing the test set result  </span></span>
+<span id="cb1-65"><a href="#cb1-65" tabindex="-1"></a>from matplotlib.colors import ListedColormap  </span>
+<span id="cb1-66"><a href="#cb1-66" tabindex="-1"></a>x_set, y_set <span class="ot">=</span> x_test, y_test  </span>
+<span id="cb1-67"><a href="#cb1-67" tabindex="-1"></a>x1, x2 <span class="ot">=</span> <span class="fu">nm.meshgrid</span>(<span class="fu">nm.arange</span>(<span class="at">start =</span> x_set[<span class="sc">:</span>, <span class="dv">0</span>]<span class="fu">.min</span>() <span class="sc">-</span> <span class="dv">1</span>, <span class="at">stop =</span> x_set[<span class="sc">:</span>, <span class="dv">0</span>]<span class="fu">.max</span>() <span class="sc">+</span> <span class="dv">1</span>, <span class="at">step  =</span><span class="fl">0.01</span>),  </span>
+<span id="cb1-68"><a href="#cb1-68" tabindex="-1"></a><span class="fu">nm.arange</span>(<span class="at">start =</span> x_set[<span class="sc">:</span>, <span class="dv">1</span>]<span class="fu">.min</span>() <span class="sc">-</span> <span class="dv">1</span>, <span class="at">stop =</span> x_set[<span class="sc">:</span>, <span class="dv">1</span>]<span class="fu">.max</span>() <span class="sc">+</span> <span class="dv">1</span>, <span class="at">step =</span> <span class="fl">0.01</span>))  </span>
+<span id="cb1-69"><a href="#cb1-69" tabindex="-1"></a><span class="fu">plm.contourf</span>(x1, x2, <span class="fu">classifier.predict</span>(<span class="fu">nm.array</span>([<span class="fu">x1.ravel</span>(), <span class="fu">x2.ravel</span>()]).T)<span class="fu">.reshape</span>(x1.shape),  </span>
+<span id="cb1-70"><a href="#cb1-70" tabindex="-1"></a><span class="at">alpha =</span> <span class="fl">0.75</span>, <span class="at">cmap =</span> <span class="fu">ListedColormap</span>((<span class="st">&#39;red&#39;</span>,<span class="st">&#39;green&#39;</span> )))  </span>
+<span id="cb1-71"><a href="#cb1-71" tabindex="-1"></a><span class="fu">plm.xlim</span>(<span class="fu">x1.min</span>(), <span class="fu">x1.max</span>())  </span>
+<span id="cb1-72"><a href="#cb1-72" tabindex="-1"></a><span class="fu">plm.ylim</span>(<span class="fu">x2.min</span>(), <span class="fu">x2.max</span>())  </span>
+<span id="cb1-73"><a href="#cb1-73" tabindex="-1"></a><span class="cf">for</span> i, j <span class="cf">in</span> <span class="fu">enumerate</span>(<span class="fu">nm.unique</span>(y_set))<span class="sc">:</span>  </span>
+<span id="cb1-74"><a href="#cb1-74" tabindex="-1"></a>    <span class="fu">plm.scatter</span>(x_set[y_set <span class="sc">==</span> j, <span class="dv">0</span>], x_set[y_set <span class="sc">==</span> j, <span class="dv">1</span>],  </span>
+<span id="cb1-75"><a href="#cb1-75" tabindex="-1"></a>        <span class="at">c =</span> <span class="fu">ListedColormap</span>((<span class="st">&#39;red&#39;</span>, <span class="st">&#39;green&#39;</span>))(i), <span class="at">label =</span> j)  </span>
+<span id="cb1-76"><a href="#cb1-76" tabindex="-1"></a><span class="fu">plm.title</span>(<span class="st">&#39;MLR algorithm(Test set)&#39;</span>)  </span>
+<span id="cb1-77"><a href="#cb1-77" tabindex="-1"></a><span class="fu">plm.xlabel</span>(<span class="st">&#39;Label1&#39;</span>)  </span>
+<span id="cb1-78"><a href="#cb1-78" tabindex="-1"></a><span class="fu">plm.ylabel</span>(<span class="st">&#39;Label2&#39;</span>)  </span>
+<span id="cb1-79"><a href="#cb1-79" tabindex="-1"></a><span class="fu">plm.legend</span>()  </span>
+<span id="cb1-80"><a href="#cb1-80" tabindex="-1"></a><span class="fu">plm.show</span>()</span></code></pre></div>
+<p><br />
+<br />
+</p>
+</div>
+<div id="r" class="section level2">
+<h2>R</h2>
+<div id="multivariate-multiple-regression" class="section level3">
+<h3>Multivariate multiple regression</h3>
+<p><br />
+<br />
+</p>
+<p>An extension to MLR, of which an interesting description is provided
+<a
+href="https://scse.d.umn.edu/sites/scse.d.umn.edu/files/cassiequickfinalpaper.pdf">here</a>.<br />
+</p>
+<p>Multivariate regression: several dependent variables with different
+variances Multiple regression: only one dependent variable y</p>
+<p><br />
+<br />
+</p>
+<p>Let’s try to analyze a particular data set, from a published paper
+regarding wine:<br />
+</p>
+<p>P. Cortez, A. Cerdeira, F. Almeida, T. Matos and J. Reis. Modeling
+wine preferences by data mining from physicochemical properties. In
+Decision Support Systems, Elsevier, 47(4):547-553, 2009.<br />
+<br />
+</p>
+<div id="data-understanding" class="section level4">
+<h4>Data Understanding</h4>
+<p>Wine variants of Portuguese “Vinho Verde” are analysed with regards
+to their chemical properties. Finally, we are interested how these
+chemical properties influence wine quality.</p>
+<p>These are our independent variables:</p>
+<p>1 - fixed acidity 2 - volatile acidity 3 - citric acid 4 - residual
+sugar 5 - chlorides 6 - free sulfur dioxide 7 - total sulfur dioxide 8 -
+density 9 - pH 10 - sulphates 11 - alcohol</p>
+<p>This is our dependent variable:</p>
+<p>12 - quality (score between 0 and 10)<br />
+</p>
+<p><br />
+</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="do">## Packages</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>We load required packages.</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">library</span>(tibble)</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="fu">library</span>(car)</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="fu">library</span>(caret)</span></code></pre></div>
+<p><br />
+<br />
+</p>
+</div>
+<div id="data-import" class="section level4">
+<h4>Data Import</h4>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># if file does not exist, download it first</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>file_path <span class="ot">&lt;-</span> <span class="st">&quot;./data/winequality-red.csv&quot;</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(file_path)) {</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  <span class="fu">dir.create</span>(<span class="st">&quot;./data&quot;</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  url <span class="ot">&lt;-</span> <span class="st">&quot;https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv&quot;</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>  <span class="fu">download.file</span>(<span class="at">url =</span> url, </span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>                <span class="at">destfile =</span> file_path)</span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>}</span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(file_path, <span class="at">sep =</span> <span class="st">&quot;;&quot;</span>)</span></code></pre></div>
+<p><br />
+</p>
+</div>
+<div id="data-summary" class="section level4">
+<h4>Data Summary</h4>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">summary</span>(df)</span></code></pre></div>
+<pre><code>##  fixed.acidity    volatile.acidity  citric.acid     residual.sugar     chlorides       free.sulfur.dioxide total.sulfur.dioxide    density      
+##  Min.   : 4.600   Min.   :0.1200   Min.   :0.0000   Min.   : 0.900   Min.   :0.01200   Min.   : 1.00       Min.   :  6.00       Min.   :0.9901  
+##  1st Qu.: 7.400   1st Qu.:0.3900   1st Qu.:0.1200   1st Qu.: 1.900   1st Qu.:0.07200   1st Qu.: 7.00       1st Qu.: 22.00       1st Qu.:0.9962  
+##  Median : 8.300   Median :0.5100   Median :0.2850   Median : 2.300   Median :0.08100   Median :13.00       Median : 38.00       Median :0.9972  
+##  Mean   : 8.703   Mean   :0.5226   Mean   :0.2963   Mean   : 2.584   Mean   :0.08977   Mean   :15.28       Mean   : 47.69       Mean   :0.9972  
+##  3rd Qu.: 9.800   3rd Qu.:0.6300   3rd Qu.:0.4700   3rd Qu.: 2.700   3rd Qu.:0.09300   3rd Qu.:21.00       3rd Qu.: 63.00       3rd Qu.:0.9982  
+##  Max.   :15.900   Max.   :1.3300   Max.   :1.0000   Max.   :15.500   Max.   :0.61100   Max.   :68.00       Max.   :289.00       Max.   :1.0032  
+##                                                     NA&#39;s   :1        NA&#39;s   :1         NA&#39;s   :1           NA&#39;s   :1            NA&#39;s   :1       
+##        pH          sulphates         alcohol         quality     
+##  Min.   :2.740   Min.   :0.3300   Min.   : 8.40   Min.   :3.000  
+##  1st Qu.:3.190   1st Qu.:0.5600   1st Qu.: 9.50   1st Qu.:5.000  
+##  Median :3.300   Median :0.6200   Median :10.00   Median :6.000  
+##  Mean   :3.296   Mean   :0.6666   Mean   :10.31   Mean   :5.643  
+##  3rd Qu.:3.390   3rd Qu.:0.7350   3rd Qu.:10.90   3rd Qu.:6.000  
+##  Max.   :3.900   Max.   :2.0000   Max.   :14.90   Max.   :8.000  
+##  NA&#39;s   :1       NA&#39;s   :1        NA&#39;s   :1       NA&#39;s   :1</code></pre>
+</div>
+<div id="visualising-correlations" class="section level4">
+<h4>Visualising Correlations</h4>
+<p>There is a way to plot all multivariate correlations (although
+visually not so appealing). It also does not work, if there are many
+dimensions. You need to subset the results.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">pairs</span>(df[, <span class="dv">8</span><span class="sc">:</span><span class="dv">12</span>])</span></code></pre></div>
+<p><img src="session3_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>We create our own visualisation, that is much better to read.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>df_scaled <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>  <span class="fu">scale</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>  <span class="fu">as.tibble</span>()</span></code></pre></div>
+<pre><code>## Warning: `as.tibble()` was deprecated in tibble 2.0.0.
+## ℹ Please use `as_tibble()` instead.
+## ℹ The signature and semantics have changed, see `?as_tibble`.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>df_gather <span class="ot">&lt;-</span> df_scaled <span class="sc">%&gt;%</span> </span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>  <span class="fu">gather</span>(<span class="at">key =</span> <span class="st">&quot;variable&quot;</span>, <span class="at">value =</span> <span class="st">&quot;value&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">11</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">variable =</span> <span class="fu">as.factor</span>(variable))</span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>g <span class="ot">&lt;-</span><span class="fu">ggplot</span>(df_gather, <span class="fu">aes</span>(<span class="at">x =</span> quality, <span class="at">y =</span> value))</span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>g <span class="ot">&lt;-</span> g <span class="sc">+</span> <span class="fu">facet_wrap</span>( <span class="sc">~</span> variable)</span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a>g <span class="ot">&lt;-</span> g <span class="sc">+</span> <span class="fu">geom_point</span>()</span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a>g <span class="ot">&lt;-</span> g <span class="sc">+</span> <span class="fu">geom_smooth</span>(<span class="at">se =</span> F, <span class="at">method =</span> <span class="st">&quot;lm&quot;</span>)</span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a>g</span></code></pre></div>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning: Removed 11 rows containing non-finite values (`stat_smooth()`).</code></pre>
+<pre><code>## Warning: Removed 11 rows containing missing values (`geom_point()`).</code></pre>
+<p><img src="session3_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="correlation-matrix" class="section level4">
+<h4>Correlation Matrix</h4>
+<p>Assuming there is a linear relationship between variables, a
+correlation matrix is calculated.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>cor_vals <span class="ot">&lt;-</span> <span class="fu">cor</span>(df) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">Var1 =</span> <span class="fu">rownames</span>(.)) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>  <span class="fu">gather</span>(<span class="at">key =</span> <span class="st">&quot;Var2&quot;</span>, <span class="at">value =</span> <span class="st">&quot;Corr&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(cor_vals, <span class="fu">aes</span>(<span class="at">x =</span> Var1, <span class="at">y =</span> Var2, <span class="at">fill =</span> Corr))</span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a>g <span class="ot">&lt;-</span> g <span class="sc">+</span> <span class="fu">geom_tile</span>()</span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a>g <span class="ot">&lt;-</span> g <span class="sc">+</span> <span class="fu">scale_fill_gradient2</span>(<span class="at">low =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">high =</span> <span class="st">&quot;red&quot;</span>, <span class="at">mid =</span> <span class="st">&quot;white&quot;</span>, </span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a>   <span class="at">midpoint =</span> <span class="dv">0</span>, <span class="at">limit =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>), <span class="at">space =</span> <span class="st">&quot;Lab&quot;</span>, </span>
+<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a>   <span class="at">name=</span><span class="st">&quot;Pearson</span><span class="sc">\n</span><span class="st">Correlation&quot;</span>)</span>
+<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a>g <span class="ot">&lt;-</span> g <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span>
+<span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a>g</span></code></pre></div>
+<p><img src="session3_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>Also here we can make use of a simpler alternative:
+<strong>corrplot()</strong>.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>cor_df <span class="ot">&lt;-</span> <span class="fu">cor</span>(df)</span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a><span class="fu">corrplot.mixed</span>(cor_df)</span></code></pre></div>
+<p><img src="session3_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>This shows in the upper right triangle correlations as circles. Size
+corresponds to absolute value of correlation. We are looking for large
+circles, because they indicate high absolute correlations. The colors
+correspond to positive or negative correlations. Positive correlation
+between X and Y means, that an increase of X leads to an increase in Y.
+A negative correlation between X and Y means, that an increase of X
+leads to a decrese in Y.</p>
+</div>
+</div>
+<div id="modeling" class="section level3">
+<h3>Modeling</h3>
+<blockquote>
+<p>Model Setup</p>
+</blockquote>
+<p>We create a model with <strong>lm()</strong>.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">formula =</span> <span class="st">&quot;quality ~ .&quot;</span>, <span class="at">data =</span> df)</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = &quot;quality ~ .&quot;, data = df)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.66389 -0.37968 -0.07077  0.47933  1.99549 
+## 
+## Coefficients:
+##                        Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)           5.217e+01  2.510e+01   2.079   0.0379 *  
+## fixed.acidity         5.215e-02  3.133e-02   1.665   0.0963 .  
+## volatile.acidity     -1.017e+00  1.444e-01  -7.044 3.31e-12 ***
+## citric.acid          -2.670e-01  1.764e-01  -1.514   0.1303    
+## residual.sugar        3.916e-02  1.975e-02   1.983   0.0477 *  
+## chlorides            -1.521e+00  4.911e-01  -3.097   0.0020 ** 
+## free.sulfur.dioxide   2.830e-03  2.765e-03   1.024   0.3061    
+## total.sulfur.dioxide -3.766e-03  8.823e-04  -4.268 2.14e-05 ***
+## density              -4.889e+01  2.563e+01  -1.907   0.0567 .  
+## pH                   -2.374e-01  2.294e-01  -1.035   0.3009    
+## sulphates             7.372e-01  1.295e-01   5.694 1.60e-08 ***
+## alcohol               2.763e-01  3.094e-02   8.929  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.6487 on 1079 degrees of freedom
+##   (1 observation deleted due to missingness)
+## Multiple R-squared:  0.3717, Adjusted R-squared:  0.3653 
+## F-statistic: 58.03 on 11 and 1079 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>We see which parameters are statistically relevant, and what the
+parameter values are.</p>
+<blockquote>
+<p>Predictions</p>
+</blockquote>
+<p>Now, we can create predictions.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a>df<span class="sc">$</span>quality_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(<span class="at">object =</span> model, </span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a>                              <span class="at">newdata =</span> df)</span></code></pre></div>
+<p>Predicted values and true values are visualised as correlation plot.
+A linear regression line is drawed for reference. Also a black line is
+drawed as reference for a perfect regression, in which predicted values
+and actual values are identical.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">y =</span> quality, <span class="at">x =</span> quality_pred))</span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a>g <span class="ot">&lt;-</span> g <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">alpha =</span> .<span class="dv">1</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a>g <span class="ot">&lt;-</span> g <span class="sc">+</span> <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">se =</span> F)</span>
+<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a>g <span class="ot">&lt;-</span> g <span class="sc">+</span> <span class="fu">geom_abline</span>(<span class="at">slope =</span> <span class="dv">1</span>, <span class="at">intercept =</span> <span class="dv">0</span>)</span>
+<span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a>g <span class="ot">&lt;-</span> g <span class="sc">+</span> <span class="fu">ylab</span> (<span class="st">&quot;Actual&quot;</span>)</span>
+<span id="cb20-6"><a href="#cb20-6" tabindex="-1"></a>g <span class="ot">&lt;-</span> g <span class="sc">+</span> <span class="fu">xlab</span> (<span class="st">&quot;Prediction&quot;</span>)</span>
+<span id="cb20-7"><a href="#cb20-7" tabindex="-1"></a>g <span class="ot">&lt;-</span> g <span class="sc">+</span> <span class="fu">ggtitle</span> (<span class="st">&quot;Prediction vs. Actual&quot;</span>)</span>
+<span id="cb20-8"><a href="#cb20-8" tabindex="-1"></a>g</span></code></pre></div>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning: Removed 1 rows containing non-finite values (`stat_smooth()`).</code></pre>
+<pre><code>## Warning: Removed 1 rows containing missing values (`geom_point()`).</code></pre>
+<p><img src="session3_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>Predicted regression line nearly matches vertical line. This means
+there is hardly any bias. But the variation is quite high.</p>
+<blockquote>
+<p>Model Performance</p>
+</blockquote>
+<p>We calculate adjusted R-squared to analyse model performance.
+R-squared is a measure that indicates how much of variability in data is
+explained by the model.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a>model_summary <span class="ot">&lt;-</span> <span class="fu">summary</span>(model)</span>
+<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a>model_summary<span class="sc">$</span>adj.r.squared</span></code></pre></div>
+<pre><code>## [1] 0.3653133</code></pre>
+<p>Only 35 % of variability in the data is explained by the model. That
+is rather poor, so we should think about some more complex model.</p>
+<p>You should use adjusted R-squared, because R-squared always increases
+when more explanatory variables are added to a model. Its value will
+always be less or equal to R-squared.</p>
+<p>Model quality is far from perfect, but reasonably good.</p>
+<blockquote>
+<p>Error Independence</p>
+</blockquote>
+<p>The residuals of the model should be normally distributed. We can
+check this based on a QQ-plot. We extract the residuals and visualise it
+with <strong>qqnorm()</strong>. <strong>qqline()</strong> adds a
+reference line. We assume linearity if all points are on this line.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">residuals</span>(<span class="at">object =</span> model)</span>
+<span id="cb26-2"><a href="#cb26-2" tabindex="-1"></a><span class="fu">qqPlot</span>(res)</span></code></pre></div>
+<p><img src="session3_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<pre><code>## [1] 833 653</code></pre>
+<p><br />
+<br />
+</p>
+</div>
+</div>
+</div>
+<div id="exercise-1" class="section level1">
+<h1>Exercise 1</h1>
+<p><br />
+</p>
+<p>Pick one of the following numbers to active the link to a specific
+publication, using MLR. Try to describe that publication in a short
+paragraph, define why MLR was useful in that particular case and name an
+additional (chemistry/biology-related) problem that could be solved in a
+similar manner (with MLR).<br />
+<br />
+(!!!!!!!!!!!!!!!!!!!!) Additionally, find a publication on a similar
+topic (like the same type of disease data, or the same enzyme regarded
+etc.) using MULTIVARIATE regression and explain how different can the
+approaches be and how differently they allow us to look at that
+scientific problem.</p>
+<p><br />
+<br />
+Publications to choose from for MLR:<br />
+</p>
+<p><a
+href="https://www.sciencedirect.com/science/article/pii/S2211467X19301208">1</a>,
+<a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8562410/">2</a>,
+<a
+href="https://www.sciencedirect.com/science/article/pii/S0022286021007043">3</a>,
+<a
+href="https://archivepp.com/storage/models/article/rd5ep1H7eQzPsCKRZ5NNwUvhbFiS0oaByUey6D0qS4jVz5hJs69yCzgIxk39/qsar-study-of-novel-indole-derivatives-in-hepatitis-treatment-by-stepwise-multiple-linear-regressi.pdf">4</a>,
+<a href="https://www.mdpi.com/1420-3049/25/13/3088">5</a>, <a
+href="https://revues.imist.ma/index.php/morjchem/article/view/33059">6</a>,
+<a
+href="https://link.springer.com/article/10.1007/s11030-021-10181-y">7</a>,
+<a
+href="https://www.cell.com/heliyon/pdf/S2405-8440(20)31358-X.pdf">8</a>,
+<a
+href="http://ijopaar.com/files/IssueContent/D-A18117-19021.pdf">9</a>,
+<a
+href="https://www.tandfonline.com/doi/abs/10.1080/07391102.2022.2109753">10</a>,
+<a
+href="https://pubs.rsc.org/en/content/articlehtml/2021/nj/d0nj05298a">11</a>,<a
+href="https://www.sciencedirect.com/science/article/pii/S1878535222005202">12</a>,
+<a href="https://doi.org/10.1145/3522664.3528606">13</a>, <a
+href="https://www.tandfonline.com/doi/abs/10.1080/1062936X.2023.2171478">14</a>,
+<a
+href="https://www.sciencedirect.com/science/article/abs/pii/S2214785320358612">15</a>,
+<a
+href="https://www.sciencedirect.com/science/article/abs/pii/S0147651319311534">16</a>,
+<a
+href="https://link.springer.com/article/10.1007/s11356-021-12494-9">17</a>,
+<a
+href="https://www.sciencedirect.com/science/article/pii/S0169743922001988">18</a></p>
+</div>
+<div id="examples-of-using-mlr-with-code-and-description"
+class="section level1">
+<h1>Examples of using MLR, with code and description</h1>
+<p><br />
+</p>
+<p>Good examples of using MLR with description:<br />
+</p>
+<p><a
+href="https://github.com/lokaas/MultipleLinearRegression/blob/main/multiple_linear_regression.ipynb">1</a></p>
+<p><a
+href="https://github.com/cyranothebard/multiple_linear_regression/blob/master/M01S11.ipynb">2</a></p>
+<p><a
+href="https://carpentries-incubator.github.io/multiple-linear-regression-public-health/04-assumptionsAndFit/index.html">3</a></p>
+<p><br />
+</p>
+<p>Use one of those description in order to create your own script for
+MLR, either Python or R, whatever you prefer (choose only one!!). If
+it’s still problematic for you, go further to GitHub examples and finish
+your script in Exercise 3, after you’re done with Exercise 2.<br />
+<br />
+</p>
+</div>
+<div id="exercise-2" class="section level1">
+<h1>Exercise 2</h1>
+<p><br />
+<br />
+</p>
+<p>Now, go through 1 GitHub MLR practical example and describe it in a
+paragraph.<br />
+<br />
+</p>
+<div id="github-examples" class="section level2">
+<h2>GitHub examples:</h2>
+<p><br />
+</p>
+<p><br />
+</p>
+<p><a
+href="https://github.com/Avinav09/Multiple-Linear-Regression/tree/master"
+class="uri">https://github.com/Avinav09/Multiple-Linear-Regression/tree/master</a></p>
+<p><a
+href="https://github.com/cskaust/MultipleLinearRegressionInR/blob/main/%23%20Multiple%20Linear%20Regression.r"
+class="uri">https://github.com/cskaust/MultipleLinearRegressionInR/blob/main/%23%20Multiple%20Linear%20Regression.r</a></p>
+<p><a
+href="https://github.com/pranavseth/Multiple-Linear-Regression-in-R"
+class="uri">https://github.com/pranavseth/Multiple-Linear-Regression-in-R</a></p>
+<p><a
+href="https://github.com/rinaldoclemente/Life-Expectancy-Dataset-Analysis/blob/master/Life%20Expectancy%20Report.pdf"
+class="uri">https://github.com/rinaldoclemente/Life-Expectancy-Dataset-Analysis/blob/master/Life%20Expectancy%20Report.pdf</a></p>
+<p><a
+href="https://github.com/jordancheah/MultipleLinearRegression-HackerRankPredictHousePrices"
+class="uri">https://github.com/jordancheah/MultipleLinearRegression-HackerRankPredictHousePrices</a></p>
+<p><a
+href="https://github.com/shivangidx/Multiple-Linear-Regression-Analysis"
+class="uri">https://github.com/shivangidx/Multiple-Linear-Regression-Analysis</a></p>
+<p><a
+href="https://github.com/carpentries-incubator/multiple-linear-regression-public-health"
+class="uri">https://github.com/carpentries-incubator/multiple-linear-regression-public-health</a></p>
+<p><a
+href="https://github.com/shivanshjoshi28/Machine-Learning-project-1"
+class="uri">https://github.com/shivanshjoshi28/Machine-Learning-project-1</a></p>
+<p><a href="https://github.com/jasonx1011/temperature-prediction"
+class="uri">https://github.com/jasonx1011/temperature-prediction</a></p>
+<p><a href="https://github.com/acmyers/chillerMLR"
+class="uri">https://github.com/acmyers/chillerMLR</a></p>
+<p><a
+href="https://github.com/womenindatascienceatx/multiple-linear-regression-and-gradient-descent/blob/master/ch15ch08-Final.ipynb"
+class="uri">https://github.com/womenindatascienceatx/multiple-linear-regression-and-gradient-descent/blob/master/ch15ch08-Final.ipynb</a></p>
+<p><a href="https://github.com/mnassrib/multiple-linear-regression"
+class="uri">https://github.com/mnassrib/multiple-linear-regression</a></p>
+<p><a
+href="https://github.com/DeltaOptimist/Linear_Regression_Simple_Multiple_Using_R"
+class="uri">https://github.com/DeltaOptimist/Linear_Regression_Simple_Multiple_Using_R</a></p>
+<p><a
+href="https://github.com/allisonhorst/esm-206-lab-9/blob/master/lab_9_template.Rmd"
+class="uri">https://github.com/allisonhorst/esm-206-lab-9/blob/master/lab_9_template.Rmd</a></p>
+<p><a
+href="https://github.com/mahesh147/Multiple-Linear-Regression/blob/master/multiple_linear_regression.py"
+class="uri">https://github.com/mahesh147/Multiple-Linear-Regression/blob/master/multiple_linear_regression.py</a></p>
+<p><a
+href="https://github.com/Ashleshk/Machine-Learning-Stanford-Andrew-Ng"
+class="uri">https://github.com/Ashleshk/Machine-Learning-Stanford-Andrew-Ng</a></p>
+<p><a
+href="https://github.com/mrqasimasif/Multiple-Linear-Regression-CO2-Emission-Prediction"
+class="uri">https://github.com/mrqasimasif/Multiple-Linear-Regression-CO2-Emission-Prediction</a></p>
+<p><a
+href="https://github.com/datasciencewithsan/Multiple-Linear-Regression"
+class="uri">https://github.com/datasciencewithsan/Multiple-Linear-Regression</a></p>
+<p><a
+href="https://github.com/NohaWaly/MultipleLinearRegression/blob/master/MultipleLinearRegression.py"
+class="uri">https://github.com/NohaWaly/MultipleLinearRegression/blob/master/MultipleLinearRegression.py</a></p>
+<p><a
+href="https://github.com/Bidhisha24/Multiple-Linear-Regression-Model-Checking-and-Diagnostics"
+class="uri">https://github.com/Bidhisha24/Multiple-Linear-Regression-Model-Checking-and-Diagnostics</a></p>
+</div>
+</div>
+<div id="exercise-3" class="section level1">
+<h1>Exercise 3</h1>
+<p><br />
+</p>
+<p>Create your own script for MLR based on the examples and further use
+it on a data set of your choosing (it can be a recycled data set - the
+one you already used before during classes - ours or others).</p>
+<p><br />
+<br />
+</p>
+<p>Send finished exercises (Word file+code file or Jupyter notebook or
+Rmarkdown) to my email: <strong><a
+href="mailto:klaudia.chmielewska@ug.edu.pl"
+class="email">klaudia.chmielewska@ug.edu.pl</a></strong> with the Title
+format: “DCH2_Name_Class3” (DCH = Digital Chemistry)</p>
+<hr />
+<p><br />
+<br />
+Klaudia Chmielewska</p>
+<p><em><a href="mailto:klaudia.chmielewska@ug.edu.pl"
+class="email">klaudia.chmielewska@ug.edu.pl</a></em></p>
+<p><br />
+<br />
+</p>
+<p>See you in the next lesson!</p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
