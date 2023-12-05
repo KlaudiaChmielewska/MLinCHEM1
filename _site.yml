@@ -12,5 +12,7 @@ navbar:
       href: session2.html
     - text: "Lesson 3"
       href: session3.html
+    - text: "Lesson 4"
+      href: session4.html
       
 output_dir: docs
