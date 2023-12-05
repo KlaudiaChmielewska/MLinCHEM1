@@ -1,0 +1,180 @@
+---
+title: "__ML in chem__"
+subtitle: "*Lesson 4*"
+author: "__*Klaudia Chmielewska*__"
+output:    
+  html_document:
+    theme: darkly
+    df_print: paged
+    highlight: tango #code highlighter
+    toc: true # generates a table of contents (based on # and ## lines)
+    number_sections: false # table of contents numbers
+    toc_float: yes # floating table of contents
+    css: style.css 
+---
+
+```{r setup, include=FALSE, eval=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Partial Least Squares
+
+\
+
+On our last class we studied Multiple Linear Regression. Linear Regression itself, allows us to draw a line of dependency between 1 variable and the other 1 (between 2 columns of data, between 2 characteristics). Multiple one considered that more than 1 variable affects one another.
+
+But what if you have a lot of *independent* variables - many of which are correlated to other independent variables...? This means we'd end up with so called multicollinearity, where several independent variables are correlated (with correlation coefficient = 1 when relation is perfectly colinear).
+It's crucial to understand that such multicopllinearity can happen when we have a huge number of predictors, but low amount of observations (like in the case of nanomaterials, which is close to some of you!).
+
+This however undermines the theory of regression, stating about the dependency between variables. The solution in such situation can be Partial Least Squares, which reduces the dimensionality of correlated variables and model underlying correlations.
+
+If you got a feeling that it seems like an unsupervised group ypou are partially correct - as PLS combines features from PCA (principal component analysis) and multiple regression! Hence taking something from both worlds!
+
+
+Last Lesson, you were presented with an example on wine quality.
+
+For such, the predictors can be price and sugar/alcohol/acidity content.
+
+If we  checked the correlation between said predictors we might see whether the price correlated negatively with the quality or not, or alcohol content, etc.
+
+Knowing there is no basic linear regression between price and quality, PLS offers a more precise analysis, taking into consideration less-obvious aspects.
+
+
+## Applicability
+\
+
+PLS is useful in drug / food / plastic industries, as well as scientific communities of course.
+PLS is however not usually used in screening out variables that are not useful in explaining the response, which means it's not good for finding "secret relationships".
+
+Nevertheless it will be good to develop predictive models, analyzing how spectral measurements (NIR, IR, UV) correlate to chemical composition or other physio-chemical properties, which could lead to a better computational approximation of the spectra for the yet unsynthesized substances, or to predict the spectra in order to help the scientist assess whether he got an appropriate result (like in MestReNova, where you can ask the program to propose a spectra based on the chemical composition).
+
+PLS regression can preserve the asymmetry (differences/undependency) of the variables and predictors! Whereas many other techniques do not! This is a huge value of PLS!!
+
+**However, one must remember using PLS - being multivariate, the results can significantly differ from those calculated for each of the variables separately!!!**
+
+
+I believe the best laurel to PLS in chemistry is [this](https://doi.org/10.1007/s12045-021-1140-1). Feel free to read it to gain broader perspective on the method!
+
+Additionally, [here](https://github.com/selbouhaddani/OmicsPLS_ShortCourse) you can find a short course, using R.
+
+Both R and Python have dedicated packages/libraries for PLS for different application.
+Here are ones for you to consider:
+- [R omics](https://github.com/selbouhaddani/OmicsPLS)
+- [R patient phenotypes using multi-omics](https://github.com/cran/asmbPLS)
+- [Python gene onthology](https://github.com/tanghaibao/goatools)
+
+
+Example of a ML project using different algorithms, including PLS: 
+[Song prediction](https://github.com/EmanOssama/Predict-Song-Popularity-Machine-Learning-Project)
+
+
+
+
+## Exercise 1
+
+
+Pick 1 publication and describe how they used PLS in its topic of interest.
+
+
+
+Spectral data:
+[1](https://doi.org/10.1007/s12393-016-9147-1)
+[2](https://doi.org/10.1038/s41598-022-27112-y)
+[3](https://doi.org/10.3389/fcell.2020.00385)
+[4](https://doi.org/10.1021/acs.analchem.0c00075)
+
+Omics:
+[1 metabolomics](https://doi.org/10.1016/j.aca.2015.02.012)
+[2 blood pressure](https://doi.org/10.1089/omi.2021.0201)
+[3 transcriptomics](https://doi.org/10.1111/jth.14875)
+[4 proteomics](https://doi.org/10.1038/s41598-023-33194-z)
+[5 metabolomics cancer](https://doi.org/10.1186/s12967-022-03311-z)
+[6 proteomics lung cancer](https://doi.org/10.1016/j.phymed.2022.154635)
+[7 lymphoma](https://doi.org/10.1155/2021/3291762)
+[8 genomics](doi.org/10.1093/bioinformatics/btv535)
+[9 glioma genomics]( 10.3389/fphar.2023.1200795)
+[10 obesity](https://doi.org/10.3389/fphys.2022.953237)
+
+QSAR:
+[1 neuropathic pain](https://doi.org/10.1016/j.molstruc.2020.129156)
+[2 antidepressants](https://doi.org/10.1007/s00894-021-04906-x)
+[3 virtual screening](https://doi.org/10.1007/s11030-022-10596-1)
+[4 corrosion](https://doi.org/10.1016/j.molstruc.2021.130571)
+[5 mycobacterium](https://doi.org/10.2174/1570180819666220420092723)
+[6 aquatic toxicity](https://doi.org/10.1016/j.scitotenv.2023.166708)
+[7 tau - very interesting for me!](https://doi.org/10.1007/s10953-021-01083-6)
+[8 nanofiltration](https://doi.org/10.1016/j.memsci.2022.120268)
+[9 ecotox](https://doi.org/10.1016/j.chemosphere.2021.130652)
+[10 nanoparticles](10.1039/D1EN00733E)
+[11 2D QSAR & docking](https://doi.org/10.1021/acsomega.0c01323)
+[12 nanoparticle toxicity ranking in small datasets - very good too!](https://doi.org/10.1007/s11051-019-4541-2)
+
+
+
+
+
+
+
+## Exercise 2
+
+Pick 1 of the following repositories, read their codes, copy its parts to create your own code. You can work in groups.
+In the end, based on the publication, repositories and your own knowledge, you should have your own exemplatory code for PLS on your dataset of interest.
+
+
+
+[MS, NMR](https://github.com/tkimhofer/opls)
+[pigment spectrophotometric quantification](https://github.com/victorpozzobon/pigmentQuantificationSpectrophotometry)
+[nitrite spectroscopic quantification](https://github.com/victorpozzobon/PSOGAPLS_NitrogenSpectroscopy)
+[QSAR](https://github.com/OzyKartike/BioInformatics)
+
+
+
+
+
+
+## goatools
+\
+
+Let's now focus on goatools in Python. Please create a Jupyter notebook to work in it.
+
+First, go through [this repository](https://github.com/dvklopfenstein/goatools_simulation) in order to understand the possibilities of goatools.
+
+
+Now, open [the next one](https://github.com/stsour/BIOE7374_Omics). You should see... Gene ontology once more! Now instead of using david bioserver, you can also run scripts on you genes of interest without the need if an online server. 
+
+*Why is that important?*
+Because if you want to patent a given substance, it should not be submitted to online servers before submission to the Patent Office!!!!!
+
+Go through the proteomic scripts in that last link carefully. Look through both the code and the easthetics of the csv file.
+
+
+## Exercise 3
+\
+
+Use [that repository](https://github.com/stsour/BIOE7374_Omics). Edit its components (scripts & csv files) and run your own calculation and PLS. For data you can either use a cut version of the dataset presented in the repository or choose one of your own (maybe your old dataset from Omics class?).
+Prepare a Jupyter notebook with the code, comments, graphs etc. Eventually you can send me the code and results description separately.
+
+
+
+
+
+
+
+Send finished exercises (Word file+code file or Jupyter notebook or Rmarkdown) to my email: __klaudia.chmielewska@ug.edu.pl__ with the Title format: "DCH2_Name_Class4" (DCH = Digital Chemistry)
+
+***
+
+
+\
+\
+Klaudia Chmielewska
+
+_klaudia.chmielewska@ug.edu.pl_
+
+
+\
+\
+
+See you in the next lesson!
